@@ -1,0 +1,102 @@
+/*
+© 2013 LinkedIn Corp. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
+ 
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*/
+html, body {
+  background-color: #f0f0f0;
+}
+
+.topbar { border-top: 5px solid #009cc7; height: 60px; }
+
+.topbar-inner, .topbar .navbar-inner {
+  height: 60px;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#474747), to(#363636));
+  background-image: -moz-linear-gradient(top, #474747, #363636);
+  background-image: -ms-linear-gradient(top, #474747, #363636);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #474747), color-stop(100%, #363636));
+  background-image: -webkit-linear-gradient(top, #474747, #363636);
+  background-image: -o-linear-gradient(top, #474747, #363636);
+  background-image: linear-gradient(top, #474747, #363636);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#474747', endColorstr='#363636', GradientType=0);
+  -moz-box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+.topbar-content { margin: 0 -20px; }
+
+.topbar a.brand, .navbar .navbar-text a {
+  color: #009cc7;
+}
+.topbar .brand {
+  padding: 18px 20px 22px 60px;
+  font-weight: bold;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABPUlEQVR42u2WwcmEMBCF04F2oGV4U7AAKxBvHrwoNmALdqAdWIJWoJ5F0A60g1me4JLN6rI//CZ7cGCQkMH3mfgmYa7rUpqmNI4jyQpoQRPaLAxDUhXQZn3fKwOANiPFcQqwLAvVdU3TNMkH6LqOdF0nxtiWRVHIBTBN8ym+J6CkAYjiyKZp5AHwy7/nVW45BMDX8hB5nst3wbquG8g8z2psqLQPxHFMtm2/5Kd5jBHoG57nPbdun0NP+ROA4zhvPyEfeDE/hzF6xZF7kJqmndr4XwAMwzgV52suA/g2sUWXAcC2ZVluzsHzqJdkWXYdQFVVLzUQE2uCILgOQAwst1gjuukGuAFugN8FSJJkg+BTPA0/ze8XW7FmPzV//z4gFaBtW2Xi0Ga+7ysDgDazLIuiKKJhGKQJQwua0H4AE8Dyy4Wbjx0AAAAASUVORK5CYII=) no-repeat 20px 12px;
+}
+
+.topbar .login { padding: 10px 0; }
+
+.topbar .nav > li > a { padding: 20px 10px 21px; }
+.topbar .nav > li.active > a {
+  padding: 19px 9px 20px;
+  border: 1px solid #2b2b2b;
+  background: #333 !important;
+}
+.topbar .nav > li.active > a:hover { border-color: #2b2b2b; }
+.topbar .nav > li.active > a span { border-bottom: 1px solid #009cc7; }
+
+.topbar .dropdown-menu { top: 60px; }
+
+.container > .content {
+  border: 1px solid #cfcfcf;
+  background-color: #fff;
+  padding: 20px;
+  margin: 0 -21px; /* negative indent the amount of the padding to maintain the grid system */
+}
+
+/* table contextual styles backported from Bootstrap 3 */
+.table > thead > tr > td.success,
+.table > tbody > tr > td.success,
+.table > tfoot > tr > td.success,
+.table > thead > tr > th.success,
+.table > tbody > tr > th.success,
+.table > tfoot > tr > th.success,
+.table > thead > tr.success > td,
+.table > tbody > tr.success > td,
+.table > tfoot > tr.success > td,
+.table > thead > tr.success > th,
+.table > tbody > tr.success > th,
+.table > tfoot > tr.success > th {
+  background-color: #dff0d8;
+}
+
+.table-hover > tbody > tr > td.success:hover,
+.table-hover > tbody > tr > th.success:hover,
+.table-hover > tbody > tr.success:hover > td,
+.table-hover > tbody > tr.success:hover > th {
+  background-color: #d0e9c6;
+}
+
+.table > thead > tr > td.danger,
+.table > tbody > tr > td.danger,
+.table > tfoot > tr > td.danger,
+.table > thead > tr > th.danger,
+.table > tbody > tr > th.danger,
+.table > tfoot > tr > th.danger,
+.table > thead > tr.danger > td,
+.table > tbody > tr.danger > td,
+.table > tfoot > tr.danger > td,
+.table > thead > tr.danger > th,
+.table > tbody > tr.danger > th,
+.table > tfoot > tr.danger > th {
+  background-color: #f2dede;
+}
+.table-hover > tbody > tr > td.danger:hover,
+.table-hover > tbody > tr > th.danger:hover,
+.table-hover > tbody > tr.danger:hover > td,
+.table-hover > tbody > tr.danger:hover > th {
+  background-color: #ebcccc;
+}
+

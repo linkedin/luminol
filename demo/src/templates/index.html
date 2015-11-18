@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+	<head>
+			<title>naarad analysis report</title>
+				<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+				<script type="text/javascript" src="{{url_for('static', filename = 'dygraph-combined.js')}}"></script>
+
+				<script type="text/javascript" src="{{url_for('static', filename = 'bootstrap.js')}}"></script>
+
+				<script type="text/javascript" src="{{url_for('static', filename = 'naarad.js')}}"></script>
+				<link rel="stylesheet" href="{{url_for('static', filename='bootstrap.min.css')}}">
+				<link rel="stylesheet" href="{{url_for('static', filename='inversion.css') }}">
+		<style>
+			body { padding-top: 60px; }
+			.popover { z-index: 10001; }
+			/* make link targets appear just below the header */
+			.link-target { padding-top: 80px; margin-top: -80px; }
+		</style>
+	</head>
+<body data-spy="scroll" data-target=".topbar" data-offset="90" onload="loadSavedChart()">
+<div class="topbar navbar navbar-fixed-top navbar-inverse">
+	<div class="navbar-inner">
+	 <div class="container">
+		<div class="topbar-content">
+		<a class="brand" href="https://github.com/linkedin/naarad">naarad</a>
+		<ul class="nav">
+				<li>
+						<a href="summary_report.html" title="Summary">
+								<span>Summary</span>
+						</a>
+				</li>
+
+				<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<span>Metrics</span>
+								<b class="caret"></b>
+						</a>
+				</li>
+				<li class="active"><a href="report.html"><span>Chart</span></a></li>
+		</ul>
+		</div><!-- /topbar-content -->
+	 </div><!-- /container -->
+ </div><!-- /topbar-inner -->
+</div><!-- /topbar -->
+<div id="chart-parent-div" class="container">
+	<div id="analyze" class="content" style="display:block">
+		<h3>Root Cause Candidates List</h3>
+	</div>
+	<div id="chart-div-0" class="content">
+		<div id="selection-div-0" class="row">
+			<div class="span3">
+				<label>
+						<select id="select-chart-0" onchange="plot('select-chart-0','select-percentiles-0','charting-div-0',0,false,'csv-url-div-0')">
+						</select>
+				</label>
+			</div>
+			<div class="span3">
+				<label>
+						<select id="select-percentiles-0" onchange="plotCdf('select-percentiles-0','select-chart-0','charting-div-0',0,false,'csv-url-div-0')">
+								<option selected disabled hidden value=''>View CDF</option>
+
+						</select>
+				</label>
+			</div>
+			<div class="input-append span2">
+				<button type="button" class="btn" onclick="luminolDetect('select-chart-0','select-percentiles-0','filter-text-0')">Detect</button>
+        <button type="button" class="btn" onclick="luminolCorrelate('select-chart-0','select-percentiles-0','filter-text-0')">Correlate</button>
+			</div>
+			<div class="span3" id="button-div-0">
+				<button type="button" class="btn btn-primary" onclick="addChart('chart-parent-div')">+</button>
+				<button type="button" class="btn btn-info" onclick="findCorrelationList('select-chart-0')">Correlate All</button>
+			</div>
+		</div>
+		<div id="labels-charting-div-0"></div>
+		<div id="charting-div-0" style="height:50%; width:100%;" class="row"></div>
+		<div id="csv-url-div-0"></div>
+ </div>
+</div>
+<div class="container">
+		<div class="content">
+				<div class="row">
+						<div class="span12">
+							 <input id="text-share-report-url" class="span12" readonly="readonly" onclick="this.select()"/>
+						</div>
+				</div>
+		</div>
+</div>
+</body>
+
+<script>
+$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+$(document).ready(function(){
+  // Add options to the chart selector.
+	$.getJSON($SCRIPT_ROOT + '/get_selection', {}, function(data) {
+    selection = data.selection.sort();
+    for (var i in selection) {
+      s = selection[i];
+      opt = document.createElement('option');
+      txt = document.createTextNode(s);
+      opt.value = "/static/data/"+s
+      opt.appendChild(txt);
+      $('#select-chart-0')[0].add(opt);
+    }
+	});
+});
+
+function luminolDetect(timeseriesSelector, cdfSelector, filterId)
+{
+	var ts = document.getElementById(timeseriesSelector).value;
+	number = timeseriesSelector.split("-")[2]
+	$.getJSON($SCRIPT_ROOT + '/detect', {'ts_path':ts}, function(data) {
+    var anom = data.anom
+    var anom_score = data.anom_score
+		var g = timeseriesChartsList[number]
+    // Color the background of anomalies.
+		g.updateOptions({
+			underlayCallback: function(canvas, area, g) {
+        for(var i in anom){
+          var a = anom[i]
+          var left = g.toDomXCoord(a[0])
+          var right = g.toDomXCoord(a[1])
+          if(right == left){
+            left = left -1
+            right = right +1
+          }
+          canvas.fillStyle = "rgba(240, 128, 128, 1.0)"
+          canvas.fillRect(left, area.y, right-left, area.h)
+        }
+			}
+	  })
+    // Plot the anomaly scores.
+		g.updateOptions({
+			'file': "/static/"+ts.split('/')[3],
+			'labels': [ "Time", ts, 'score']
+		})
+	});
+}
+
+function appendTableHead()
+{
+	var th = document.createElement('thead')
+	var ths = ['metric', 'coefficient', 'shift', 'shifted_coefficient']
+	var row = document.createElement('tr')
+	for (var h in ths) {
+		txt = ths[h]
+		td = document.createElement('th')
+		td_txt = document.createTextNode(txt)
+		td.appendChild(td_txt)
+		row.appendChild(td)
+	}
+	th.appendChild(row)
+	return row
+}
+
+function findCorrelationList(timeseriesSelector)
+{
+	var ts = document.getElementById(timeseriesSelector).value
+	$.getJSON($SCRIPT_ROOT + '/find_correlation_list', {'ts':ts}, function(data) {
+		anom = data.anom
+		for (var r in anom) {
+			record = anom[r]
+			timestamp = record[0]
+			entries = record[1]
+			var table = document.createElement('table')
+			table.className = "table table-striped table-bordered sortable"
+			var caption = document.createElement('caption')
+			var caption_txt = document.createTextNode(timestamp)
+			caption.appendChild(caption_txt)
+			table.appendChild(caption)
+			table.appendChild(appendTableHead())
+			for (var i in entries){
+				entry = entries[i]
+				// Don't display if the coefficient is 0.
+				if (entry[1] == 0)
+					continue
+				var row = document.createElement('tr')
+				for (var d in entry) {
+					txt = entry[d]
+					var td = document.createElement('td')
+					var td_txt = document.createTextNode(txt)
+					td.appendChild(td_txt)
+					row.appendChild(td)
+				}
+				table.appendChild(row)
+			}
+			document.getElementById("analyze").appendChild(table)
+		}
+		document.getElementById('analyze').style.display = "block"
+	});
+}
+
+function luminolCorrelate(timeseriesSelector, cdfSelector, filterId)
+{
+  var ts = [];
+  var chart_element_prefix = 'select-chart-'
+  var chart_count = timeseriesChartsList.length;
+  for (var i = 0; i < chart_count; i++){
+    var name = document.getElementById(chart_element_prefix+i.toString()).value
+    ts.push(name.substring(1, name.length))
+  }
+  $.getJSON($SCRIPT_ROOT + '/correlate', {'ts_paths':ts.join(",")}, function(data) {
+      var anom = data.anom
+      console.log(anom)
+      ts.shift()
+      for (var i = 0; i < ts.length; i++)
+      {
+        console.log(ts.length)
+        console.log("!!")
+        var name = ts[i]
+        console.log(name)
+        var correlation = anom[name]
+        console.log(correlation)
+        timeseriesChartsList[i+1].updateOptions({
+          underlayCallback: function(canvas, area, g) {
+            console.log('hi')
+            for(var j in correlation) {
+              var a = correlation[j];
+              console.log(correlation)
+              console.log(g)
+              var left = g.toDomXCoord(a[0]);
+              var right = g.toDomXCoord(a[1]);
+              //console.log(left, right)
+              if (right == left){
+                left = left - 1;
+                right = right + 1;
+              }
+              canvas.fillStyle = "rgba(240, 128, 128, 1.0)"
+              var coefficient = a[2].coefficient
+              if(coefficient > 0.65)
+                canvas.fillStyle = "rgba(144, 238, 144, 1.0)";
+              else if (coefficient > 0.5)
+                canvas.fillStyle = "rgba(135, 206, 250, 1.0)"
+              canvas.fillRect(left, area.y, right-left, area.h)
+            }
+          }
+
+        });
+      }
+  });
+}
+</script>

@@ -1,0 +1,52 @@
+Copyright 2013 LinkedIn Corp. All rights reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+List of other open-source software used/depended on by Naarad:
+ 
+PrintGCStats
+https://java.net/projects/printgcstats/
+Copyright 2013 Oracle
+License: BSD
+ 
+dygraphs
+http://dygraphs.com/
+Copyright 2011 Dan Vanderkam
+License: MIT
+ 
+numpy
+http://www.numpy.org/
+Copyright 2005-2013 NumPy Developers
+License: BSD
+ 
+matplotlib
+http://matplotlib.org/
+Copyright 2012-2013 Matplotlib Development Team
+License: PSF (http://matplotlib.org/users/license.html)
+ 
+pytz
+http://pytz.sourceforge.net/
+Copyright 2008-2013 Stuart Bishop
+License: MIT
+
+sorttable.js
+http://www.kryogenix.org/code/browser/sorttable/#licence
+License: X11 License
+
+pygal
+http://pygal.org
+License: GNU LGPL v3+ (https://www.gnu.org/licenses/lgpl.html)
+
+bootstrap
+http://getbootstrap.com/
+License: Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
