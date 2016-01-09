@@ -17,5 +17,6 @@ anomaly_detector_algorithms = {
     'derivative_detector': derivative_detector.DerivativeDetector,
     'exp_avg_detector': exp_avg_detector.ExpAvgDetector,
     'absolute_threshold': absolute_threshold.AbsoluteThreshold,
-    'diff_percent_threshold': diff_percent_threshold.DiffPercentThreshold
+    'diff_percent_threshold': diff_percent_threshold.DiffPercentThreshold,
+    'sign_test': sign_test.SignTest
 }
