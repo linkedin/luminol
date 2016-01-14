@@ -10,7 +10,7 @@ with open('requirements.txt') as f:
 
 setup(name="luminol",
       description='luminol is an anomaly detection and correlation library for timeseries data.',
-      url='https://github.com/linkedin/naarad',
+      url='https://github.com/linkedin/luminol',
       author='Naarad Developers',
       author_email='naarad-dev@googlegroups.com',
       version=luminol_version,
