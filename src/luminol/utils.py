@@ -75,6 +75,30 @@ def to_epoch(t_str):
         pass
   raise exceptions.InvalidDataFormat
 
+def erf_approx(x):
+  """
+  Home grown version of erf - as it is not in python 2.6
+  error < 0.00000015
+  see: Handbook of Mathematical Functions, formula 7.1.26.
+  :param x:
+  :return: erf
+  """
+  sign = 1 if x >= 0 else -1
+  x = abs(x)
+
+  # constants
+  a1 =  0.254829592
+  a2 = -0.284496736
+  a3 =  1.421413741
+  a4 = -1.453152027
+  a5 =  1.061405429
+  p  =  0.3275911
+
+  # A&S formula 7.1.26
+  t = 1.0/(1.0 + p*x)
+  y = 1.0 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*math.exp(-x*x)
+
+  return sign * y
 
 def qbinom(p, n):
   """
@@ -119,7 +143,7 @@ def pbinom(k, n):
   elif n > 10:
     # use normal approximation
     con_adj = 0 if n % 2 else 0.5
-    return 0.5 * (1 + math.erf((k + con_adj - n * 0.5) / (math.sqrt(n * 0.5))))
+    return 0.5 * (1 + erf_approx((k + con_adj - n * 0.5) / (math.sqrt(n * 0.5))))
 
   # compute exactly
   two_nth = 0.5 ** n
