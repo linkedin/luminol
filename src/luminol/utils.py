@@ -14,11 +14,10 @@ Utilities for luminol
 """
 import csv
 import datetime
-import math
 import time
 
 from luminol import constants, exceptions
-
+from scipy.stats import binom
 
 def compute_ema(smoothing_factor, points):
   """
@@ -84,51 +83,19 @@ def qbinom(p, n):
   compare to R qbinom
   :param n: number
   :param p: quantile level
-  :return: k su
+  :return: k
   """
-  if p > 0.5:
-    return n - qbinom(1 - p, n)
-  elif p == 0.5:
-    return n / 2
 
-  two_nth = 0.5 ** n
-  q = two_nth
-  k = n
-  fact = 1
-  while q < 1 - p and k > 0:
-    fact *= float(k) / (n - k + 1)
-    q += fact * two_nth
-    k -= 1
-
-  return k
+  return binom.ppf(p, n, 0.5)
 
 
 def pbinom(k, n):
   """
   Compute cdf for binomial with prob = 0.5
-  uses normal approx for n > 10 (err < 0.0025)
   compare to R pbinom
   :param k:
   :param n:
-  :return:
+  :return: cumulative probability
   """
-  if k == n:
-    return 1.0
-  elif k < n / 2:
-    return 1.0 - pbinom(n - k, n)
-  elif n > 10:
-    # use normal approximation
-    con_adj = 0 if n % 2 else 0.5
-    return 0.5 * (1 + math.erf((k + con_adj - n * 0.5) / (math.sqrt(n * 0.5))))
 
-  # compute exactly
-  two_nth = 0.5 ** n
-  prob = 1.0 - two_nth
-  fact = n
-  j = n - 1
-  while j > k:
-    prob -= fact * two_nth
-    fact *= float(j) / (n - j + 1)
-    j -= 1
-
-  return prob
+  return binom.cdf(k, n, 0.5)

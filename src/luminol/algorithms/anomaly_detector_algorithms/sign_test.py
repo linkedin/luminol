@@ -60,11 +60,11 @@ class SignTest(AnomalyDetectorAlgorithm):
     """
     super(SignTest, self).__init__(self.__class__.__name__, time_series, baseline_time_series)
 
-    if not percent_threshold_upper and not percent_threshold_lower:
+    if percent_threshold_upper is None and percent_threshold_lower is None:
       raise exceptions.RequiredParametersNotPassed('luminol.algorithms.anomaly_detector_algorithms.sign_test: \
           Either percent_threshold_upper or percent_threshold_lower is needed')
 
-    if percent_threshold_upper and percent_threshold_lower:
+    if percent_threshold_upper is not None and percent_threshold_lower is not None:
       raise exceptions.RequiredParametersNotPassed('luminol.algorithms.anomaly_detector_algorithms.sign_test: \
           Cannot specify both percent_threshold_upper and percent_threshold_lower')
 
@@ -77,11 +77,11 @@ class SignTest(AnomalyDetectorAlgorithm):
     self.confidence = confidence
     self.offset = offset
 
-    self.percent_threshold = percent_threshold_upper if percent_threshold_upper else percent_threshold_lower
+    self.percent_threshold = percent_threshold_upper if percent_threshold_upper is not None else percent_threshold_lower
 
     # scale will transform the time series and baseline
     # if we are detecting lower threshold we mirror the data
-    self.scale = 1 if percent_threshold_upper else -1
+    self.scale = 1 if percent_threshold_upper is not None else -1
 
   def _set_scores(self):
     """
@@ -149,7 +149,7 @@ class SignTest(AnomalyDetectorAlgorithm):
     """
 
     if len(x) != len(y) or len(x) < k:
-      return np.zeros(len(x))
+      return list()
 
     # our filter to convolve with - just counts
     f = np.ones(k)
