@@ -13,13 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 import os
 import sys
 import unittest
+import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from luminol import exceptions
 from luminol.anomaly_detector import AnomalyDetector
 from luminol.modules.time_series import TimeSeries
-
+from luminol.utils import pbinom, qbinom
 # Needed for custom algorithms
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
 
@@ -61,7 +62,7 @@ class TestAnomalyDetector(unittest.TestCase):
     Test "sign test" algorithm with a threshold of 20%
     """
     bs = dict()
-    bs.update({t: 1 for t in range(1, 100)})
+    bs.update((t, 1) for t in range(1, 100))
     ts = dict(bs)
 
     # test missing parameters
@@ -90,7 +91,7 @@ class TestAnomalyDetector(unittest.TestCase):
     self.assertEquals(len(anomalies), 0)
 
     # Next one anomaly exactly equal to scan window
-    ts.update({t: 1.200001 for t in range(10, 34)})
+    ts.update((t, 1.200001) for t in range(10, 34))
     detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
                                algorithm_params=algorithm_params)
     anomalies = detector.get_anomalies()
@@ -112,7 +113,7 @@ class TestAnomalyDetector(unittest.TestCase):
     algorithm_params = {'percent_threshold_lower': -20,
                         'scan_window': 24,
                         'confidence': 0.01}
-    ts.update({t: 0.799999 for t in range(10, 34)})
+    ts.update((t, 0.799999) for t in range(10, 34))
 
     detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
                                algorithm_params=algorithm_params)
@@ -129,8 +130,8 @@ class TestAnomalyDetector(unittest.TestCase):
 
     # anomalies separated by big gap
     ts.update(bs)
-    ts.update({t: 0.799999 for t in range(1, 25)})
-    ts.update({t: 0.799999 for t in range(60, 84)})
+    ts.update((t, 0.799999) for t in range(1, 25))
+    ts.update((t, 0.799999) for t in range(60, 84))
     detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
                                algorithm_params=algorithm_params)
     anomalies = detector.get_anomalies()
@@ -156,8 +157,8 @@ class TestAnomalyDetector(unittest.TestCase):
     algorithm_params = {'percent_threshold_upper': 20,
                         'scan_window': 24}
     ts.update(bs)
-    ts.update({t: 1.21 for t in range(1, 25)})
-    ts.update({t: 1.21 for t in range(30, 40)})
+    ts.update((t, 1.21) for t in range(1, 25))
+    ts.update((t, 1.21) for t in range(30, 40))
     detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
                                algorithm_params=algorithm_params)
     anomalies = detector.get_anomalies()
@@ -174,8 +175,8 @@ class TestAnomalyDetector(unittest.TestCase):
 
     # try noisy data
     ts.update(bs)
-    ts.update({t: 1.21 for t in range(1, 25)})
-    ts.update({t: 1.19 for t in range(1, 25, 6)})
+    ts.update((t, 1.21) for t in range(1, 25))
+    ts.update((t, 1.19) for t in range(1, 25, 6))
     algorithm_params = {'percent_threshold_upper': 20,
                         'scan_window': 24,
                         'confidence': 0.01}
@@ -195,12 +196,54 @@ class TestAnomalyDetector(unittest.TestCase):
     anomalies = detector.get_anomalies()
     self.assertEquals(len(anomalies), 0)
 
+  def test_sign_test_algorithm_interface(self):
+    """
+    Test "sign test" algorithm with a threshold of 0%
+    """
+    bs = dict()
+    bs.update((t, 1) for t in range(1, 30))
+
+    # Simple tests
+    algorithm_params = {'percent_threshold_upper': 0,
+                        'offset': 2,
+                        'scan_window': 24,
+                        'confidence': 0.01}
+    ts = dict(bs)
+    # bigger than 10 percent but below bias
+    ts.update((t, 3.1) for t in range(1, 21))
+
+    # first no anomalies
+    detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
+                               algorithm_params=algorithm_params)
+    anomalies = detector.get_anomalies()
+
+    self.assertTrue(anomalies is not None)
+    self.assertEquals(len(anomalies), 1)
+
+    # try lower bound
+    algorithm_params = {'percent_threshold_lower': 0,
+                        'offset': 2,
+                        'scan_window': 24,
+                        'confidence': 0.01}
+    ts = dict(bs)
+    # less than baseline plus bias
+    ts.update((t, 2.9) for t in range(1, 25))
+
+    # first no anomalies
+    detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
+                               algorithm_params=algorithm_params)
+    anomalies = detector.get_anomalies()
+
+    self.assertTrue(anomalies is not None)
+    self.assertEquals(len(anomalies), 1)
+
+
   def test_sign_test_algorithm_with_shift(self):
     """
     Test "sign test" algorithm with a threshold of 20%
     """
     bs = dict()
-    bs.update({t: 1 for t in range(1, 100)})
+    bs.update((t, 1) for t in range(1, 100))
 
     # Simple tests
     algorithm_params = {'percent_threshold_upper': 10,
@@ -209,7 +252,7 @@ class TestAnomalyDetector(unittest.TestCase):
                         'confidence': 0.01}
     ts = dict(bs)
     # bigger than 10 percent but below bias
-    ts.update({t: 1.2 for t in range(10, 34)})
+    ts.update((t, 1.2) for t in range(10, 34))
 
     # first no anomalies
     detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
@@ -221,7 +264,7 @@ class TestAnomalyDetector(unittest.TestCase):
 
     # Next one anomaly exactly equal to scan window
     # uses bias
-    ts.update({t: 2.100001 for t in range(10, 34)})
+    ts.update((t, 2.100001) for t in range(10, 34))
     detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
                                algorithm_params=algorithm_params)
     anomalies = detector.get_anomalies()
@@ -244,7 +287,7 @@ class TestAnomalyDetector(unittest.TestCase):
                         'offset': -0.1,
                         'scan_window': 24}
 
-    ts.update({t: 0.799999 for t in range(10, 34)})
+    ts.update((t, 0.799999) for t in range(10, 34))
     # no anomalies
     detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
                                algorithm_params=algorithm_params)
@@ -254,7 +297,7 @@ class TestAnomalyDetector(unittest.TestCase):
     self.assertEquals(len(anomalies), 0)
 
     # lower the time series by 0.1
-    ts.update({t: 0.699999 for t in range(10, 34)})
+    ts.update((t, 0.699999) for t in range(10, 34))
 
     detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
                                algorithm_params=algorithm_params)
