@@ -96,7 +96,7 @@ class SignTest(AnomalyDetectorAlgorithm):
                                             self.scale * np.array(self.baseline_time_series.values),
                                             k=self.scan_window,
                                             conf=self.confidence,
-                                            alpha=float(self.percent_threshold) / 100,
+                                            alpha=self.scale * float(self.percent_threshold) / 100,
                                             offset=self.scale * self.offset)
     for (s, e), prob in anomalies:
       scores[s:e] = 100 * prob
