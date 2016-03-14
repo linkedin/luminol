@@ -51,7 +51,7 @@ This is a quick start guide for using luminol for time series analysis.
    print correlator.get_correlation_result().coefficient
    ```
 
-These are really simple use of luminol. For information of the parameter types, return types and optional parameters, please refer to the API.
+These are really simple use of luminol. For information about the parameter types, return types and optional parameters, please refer to the API.
 
 ***
 
@@ -107,8 +107,8 @@ refine_algorithm_name=None, refine_algorithm_params=None)
    ```
 * `baseline_time_series`: an optional baseline time series of one the types mentioned above.
 * `score only(bool)`: if asserted, anomaly scores for the time series will be available, while anomaly periods will not be identified.
-* `score_threshold`: if passed, anomaly scores above this value will be identified as anomaly. It can overrides score_percentile_threshold.
-* `score_precentile_threshold`: if passed, anomaly scores above this percentile will be identified as anomaly. It can not overrides score_threshold.
+* `score_threshold`: if passed, anomaly scores above this value will be identified as anomaly. It can override score_percentile_threshold.
+* `score_precentile_threshold`: if passed, anomaly scores above this percentile will be identified as anomaly. It can not override score_threshold.
 * `algorithm_name(string)`: if passed, the specific algorithm will be used to compute anomaly scores.
 * `algorithm_params(dict)`: additional parameters for algorithm specified by algorithm_name.
 * `refine_algorithm_name(string)`: if passed, the specific algorithm will be used to compute the time stamp of severity within each anomaly period.
@@ -144,7 +144,7 @@ It may seem vague for the meanings of some parameters above. Here are some usefu
 * [Exponential Moving Avg](http://en.wikipedia.org/wiki/Exponential_smoothing)
  
 The **AnomalyDetector** class has the following public methods:
-* `get_all_scores()`: returns a anomaly score time series of type [TimeSeries](#modules).
+* `get_all_scores()`: returns an anomaly score time series of type [TimeSeries](#modules).
 * `get_anomalies()`: return a list of [Anomaly](#modules) objects.
 
 ####Correlator
