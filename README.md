@@ -75,7 +75,7 @@ _class_ luminol.modules.correlation_result.**CorrelationResult**
 ```python
 self.coefficient: # correlation coefficient.
 self.shift: # the amount of shift needed to get the above coefficient.
-self.shifted_coefficient: # a correlation coefficient with shift is taken into account.
+self.shifted_coefficient: # a correlation coefficient with shift taken into account.
 ```
 
 ####TimeSeries
