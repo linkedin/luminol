@@ -444,6 +444,7 @@ class CustomAlgo(AnomalyDetectorAlgorithm):
 
         self.anom_scores = TimeSeries(self._denoise_scores(anom_scores))
 
+    """
     Compute anomaly scores for the time series
     This algorithm just takes the diff of threshold with current value as anomaly score
     """
