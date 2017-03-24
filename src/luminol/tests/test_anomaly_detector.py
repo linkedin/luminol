@@ -385,10 +385,6 @@ class TestAnomalyDetector(unittest.TestCase):
     detector1 = AnomalyDetector(self.s1, score_percent_threshold=0.1, algorithm_name='derivative_detector')
     self.assertNotEqual(detector1.get_anomalies(), detector.get_anomalies())
 
-if __name__ == '__main__':
-  unittest.main()
-
-
 class CustomAlgo(AnomalyDetectorAlgorithm):
   """
   Copy of DiffPercentThreshold Algorithm from algorithms/anomaly_detector_algorithms/diff_percent_threshold.py to test
@@ -432,3 +428,6 @@ class CustomAlgo(AnomalyDetectorAlgorithm):
         anom_scores[timestamp] = -1 * diff_percent
 
     self.anom_scores = TimeSeries(self._denoise_scores(anom_scores))
+
+if __name__ == '__main__':
+  unittest.main()
