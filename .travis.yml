@@ -1,8 +1,18 @@
 language: python
 python:
   - "2.7"
-# command to install dependencies
-install: "pip install -r requirements.txt"
-# command to run tests
-script: python src/luminol/tests/run_tests.py
-#   - python src/luminol/tests/test_anomaly_detector.py
+  # - "3.6"
+
+virtualenv:
+    system_site_packages: true
+    - "2.7_with_system_site_packages"
+    # - "3.6_with_system_site_packages"
+
+before_install:
+    - sudo apt-get install -qq python-numpy python-scipy
+
+install: pip install -r requirements.txt
+
+script:
+  - python src/luminol/tests/run_tests.py
+  - python src/luminol/tests/test_anomaly_detector.py
