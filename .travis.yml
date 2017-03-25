@@ -3,11 +3,10 @@ python:
   - 2.7_with_system_site_packages
   - 3.6
 
-before_install:
-  - sudo apt-get install -qq python-numpy python-scipy
+before_install: sudo apt-get install -qq python-numpy python-scipy
 
-install: pip install -r requirements.txt
+install:
+  - pip install -r requirements.txt
+  - pip install pytest pytest-cov
 
-script:
-  - python src/luminol/tests/run_tests.py
-  - python src/luminol/tests/test_anomaly_detector.py
+script: pytest --cov=src/ src/luminol/tests/
