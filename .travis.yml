@@ -9,4 +9,4 @@ install:
   - pip install -r requirements.txt
   - pip install pytest pytest-cov
 
-script: pytest --cov=src/ src/luminol/tests/
+script: python -m pytest --cov=src/ src/luminol/tests/
