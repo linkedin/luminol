@@ -9,6 +9,8 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
+from future.utils import implements_iterator
+from builtins import map
 import numpy
 
 
@@ -43,7 +45,7 @@ class TimeSeries(object):
         """
         Return list of timestamp values in order by milliseconds since epoch.
         """
-        return map(lambda ts: ts * 1000, self.timestamps)
+        return list(map(lambda ts: ts * 1000, self.timestamps))
 
     def __repr__(self):
         return 'TimeSeries<start={0}, end={1}>'.format(repr(self.start), repr(self.end))
@@ -213,7 +215,7 @@ class TimeSeries(object):
         if isinstance(other, TimeSeries):
             aligned, other_aligned = {}, {}
             i, other_i = self.iteritems_silent(), other.iteritems_silent()
-            item, other_item = i.next(), other_i.next()
+            item, other_item = next(i), next(other_i)
 
             while item and other_item:
                 # Unpack timestamps and values.
@@ -222,27 +224,27 @@ class TimeSeries(object):
                 if timestamp == other_timestamp:
                     aligned[timestamp] = value
                     other_aligned[other_timestamp] = other_value
-                    item = i.next()
-                    other_item = other_i.next()
+                    item = next(i)
+                    other_item = next(other_i)
                 elif timestamp < other_timestamp:
                     aligned[timestamp] = value
                     other_aligned[timestamp] = other_value
-                    item = i.next()
+                    item = next(i)
                 else:
                     aligned[other_timestamp] = value
                     other_aligned[other_timestamp] = other_value
-                    other_item = other_i.next()
+                    other_item = next(other_i)
             # Align remaining items.
             while item:
                 timestamp, value = item
                 aligned[timestamp] = value
                 other_aligned[timestamp] = other.values[-1]
-                item = i.next()
+                item = next(i)
             while other_item:
                 other_timestamp, other_value = other_item
                 aligned[other_timestamp] = self.values[-1]
                 other_aligned[other_timestamp] = other_value
-                other_item = other_i.next()
+                other_item = next(other_i)
             return TimeSeries(aligned), TimeSeries(other_aligned)
 
     def smooth(self, smoothing_factor):
@@ -278,7 +280,7 @@ class TimeSeries(object):
         :param int offset: The number of seconds to offset the time series.
         :return: `None`
         """
-        self.timestamps = map(lambda ts: ts + offset, self.timestamps)
+        self.timestamps = list(map(lambda ts: ts + offset, self.timestamps))
 
     def normalize(self):
         """
@@ -288,7 +290,7 @@ class TimeSeries(object):
         """
         maximum = self.max()
         if maximum:
-            self.values = map(lambda value: value / maximum, self.values)
+            self.values = list(map(lambda value: value / maximum, self.values))
 
     def crop(self, start_timestamp, end_timestamp):
         """
