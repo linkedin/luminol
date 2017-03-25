@@ -85,7 +85,10 @@ class Correlator(object):
             if not isinstance(algorithm_params, dict):
                 raise exceptions.InvalidDataFormat('luminol.Correlator: algorithm_params passed is not a dictionary.')
             else:
-                self.algorithm_params = dict(algorithm_params.items() + self.algorithm_params.items())
+                # self.algorithm_params = dict(algorithm_params.items() + self.algorithm_params.items())
+                self.algorithm_params = self.algorithm_params.copy()
+                self.algorithm_params.update(algorithm_params)
+
 
     def _sanity_check(self):
         """
