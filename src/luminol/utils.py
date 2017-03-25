@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 Utilities for luminol
 """
+# from __future__ import unicode_literals
 import csv
 import datetime
 import time
@@ -42,7 +43,8 @@ def read_csv(csv_name):
     :return dict: a dictionary represents the data in file.
     """
     data = {}
-    if not isinstance(csv_name, (str, unicode)):
+    # if not isinstance(csv_name, (str, unicode)):
+    if not isinstance(csv_name, (str,)):
         raise exceptions.InvalidDataFormat('luminol.utils: csv_name has to be a string!')
     with open(csv_name, 'r') as csv_data:
         reader = csv.reader(csv_data, delimiter=',', quotechar='|')
