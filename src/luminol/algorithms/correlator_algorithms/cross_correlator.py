@@ -102,6 +102,7 @@ class CrossCorrelator(CorrelatorAlgorithm):
         """
         while lower_bound < upper_bound:
             pos = lower_bound + (upper_bound - lower_bound) / 2
+            pos = int(pos)
             if timestamps[pos] > target:
                 upper_bound = pos
             else:
