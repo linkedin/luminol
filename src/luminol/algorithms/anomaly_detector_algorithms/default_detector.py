@@ -9,8 +9,8 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
-from exp_avg_detector import ExpAvgDetector
-from derivative_detector import DerivativeDetector
+from luminol.algorithms.anomaly_detector_algorithms.exp_avg_detector import ExpAvgDetector
+from luminol.algorithms.anomaly_detector_algorithms.derivative_detector import DerivativeDetector
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
 from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
