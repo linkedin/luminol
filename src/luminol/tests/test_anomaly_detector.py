@@ -89,7 +89,7 @@ class TestAnomalyDetector(unittest.TestCase):
         anomalies = detector.get_anomalies()
 
         self.assertTrue(anomalies is not None)
-        self.assertEquals(len(anomalies), 0)
+        self.assertEqual(len(anomalies), 0)
 
         # Next one anomaly exactly equal to scan window
         ts.update((t, 1.200001) for t in range(10, 34))
@@ -99,13 +99,13 @@ class TestAnomalyDetector(unittest.TestCase):
         anomalies = detector.get_anomalies()
 
         self.assertTrue(anomalies is not None)
-        self.assertEquals(len(anomalies), 1)
+        self.assertEqual(len(anomalies), 1)
         anomaly = anomalies[0]
         s, e = anomaly.get_time_window()
 
         # note the anomaly is larger than scan window
-        self.assertEquals(s, 4)
-        self.assertEquals(e, 39)
+        self.assertEqual(s, 4)
+        self.assertEqual(e, 39)
 
         # score should be roughly 98.5
         self.assertGreater(anomaly.anomaly_score, 98)
@@ -121,11 +121,11 @@ class TestAnomalyDetector(unittest.TestCase):
                                    algorithm_name='sign_test',
                                    algorithm_params=algorithm_params)
         anomalies = detector.get_anomalies()
-        self.assertEquals(len(anomalies), 1)
+        self.assertEqual(len(anomalies), 1)
         anomaly = anomalies[0]
         s, e = anomaly.get_time_window()
-        self.assertEquals(s, 4)
-        self.assertEquals(e, 39)
+        self.assertEqual(s, 4)
+        self.assertEqual(e, 39)
 
         # score should be roughly 98.5
         self.assertGreater(anomaly.anomaly_score, 98)
@@ -139,19 +139,19 @@ class TestAnomalyDetector(unittest.TestCase):
                                    algorithm_name='sign_test',
                                    algorithm_params=algorithm_params)
         anomalies = detector.get_anomalies()
-        self.assertEquals(len(anomalies), 2)
+        self.assertEqual(len(anomalies), 2)
         anomaly = anomalies[0]
         s, e = anomaly.get_time_window()
-        self.assertEquals(s, 1)
-        self.assertEquals(e, 30)
+        self.assertEqual(s, 1)
+        self.assertEqual(e, 30)
 
         # score ~ 99.9
         self.assertGreater(anomaly.anomaly_score, 99)
 
         anomaly = anomalies[1]
         s, e = anomaly.get_time_window()
-        self.assertEquals(s, 54)
-        self.assertEquals(e, 89)
+        self.assertEqual(s, 54)
+        self.assertEqual(e, 89)
 
         # score should be roughly 98.5
         self.assertGreater(anomaly.anomaly_score, 98)
@@ -169,11 +169,11 @@ class TestAnomalyDetector(unittest.TestCase):
         anomalies = detector.get_anomalies()
 
         # just one
-        self.assertEquals(len(anomalies), 1)
+        self.assertEqual(len(anomalies), 1)
         anomaly = anomalies[0]
         s, e = anomaly.get_time_window()
-        self.assertEquals(s, 1)
-        self.assertEquals(e, 40)
+        self.assertEqual(s, 1)
+        self.assertEqual(e, 40)
 
         # score ~ 99.9
         self.assertGreater(anomaly.anomaly_score, 99)
@@ -190,7 +190,7 @@ class TestAnomalyDetector(unittest.TestCase):
                                    algorithm_name='sign_test',
                                    algorithm_params=algorithm_params)
         anomalies = detector.get_anomalies()
-        self.assertEquals(len(anomalies), 1)
+        self.assertEqual(len(anomalies), 1)
 
         # now decrease sensitivity
         algorithm_params = {'percent_threshold_upper': 20,
@@ -201,7 +201,7 @@ class TestAnomalyDetector(unittest.TestCase):
                                    algorithm_name='sign_test',
                                    algorithm_params=algorithm_params)
         anomalies = detector.get_anomalies()
-        self.assertEquals(len(anomalies), 0)
+        self.assertEqual(len(anomalies), 0)
 
     def test_sign_test_algorithm_interface(self):
         """
@@ -226,7 +226,7 @@ class TestAnomalyDetector(unittest.TestCase):
         anomalies = detector.get_anomalies()
 
         self.assertTrue(anomalies is not None)
-        self.assertEquals(len(anomalies), 1)
+        self.assertEqual(len(anomalies), 1)
 
         # try lower bound
         algorithm_params = {'percent_threshold_lower': 0,
@@ -244,7 +244,7 @@ class TestAnomalyDetector(unittest.TestCase):
         anomalies = detector.get_anomalies()
 
         self.assertTrue(anomalies is not None)
-        self.assertEquals(len(anomalies), 1)
+        self.assertEqual(len(anomalies), 1)
 
 
     def test_sign_test_algorithm_with_shift(self):
@@ -270,7 +270,7 @@ class TestAnomalyDetector(unittest.TestCase):
         anomalies = detector.get_anomalies()
 
         self.assertTrue(anomalies is not None)
-        self.assertEquals(len(anomalies), 0)
+        self.assertEqual(len(anomalies), 0)
 
         # Next one anomaly exactly equal to scan window
         # uses bias
@@ -281,13 +281,13 @@ class TestAnomalyDetector(unittest.TestCase):
         anomalies = detector.get_anomalies()
 
         self.assertTrue(anomalies is not None)
-        self.assertEquals(len(anomalies), 1)
+        self.assertEqual(len(anomalies), 1)
         anomaly = anomalies[0]
         s, e = anomaly.get_time_window()
 
         # note the anomaly is larger than scan window
-        self.assertEquals(s, 4)
-        self.assertEquals(e, 39)
+        self.assertEqual(s, 4)
+        self.assertEqual(e, 39)
 
         # score should be roughly 98.5
         self.assertGreater(anomaly.anomaly_score, 98)
@@ -306,7 +306,7 @@ class TestAnomalyDetector(unittest.TestCase):
         anomalies = detector.get_anomalies()
 
         self.assertTrue(anomalies is not None)
-        self.assertEquals(len(anomalies), 0)
+        self.assertEqual(len(anomalies), 0)
 
         # lower the time series by 0.1
         ts.update((t, 0.699999) for t in range(10, 34))
@@ -315,11 +315,11 @@ class TestAnomalyDetector(unittest.TestCase):
                                    algorithm_name='sign_test',
                                    algorithm_params=algorithm_params)
         anomalies = detector.get_anomalies()
-        self.assertEquals(len(anomalies), 1)
+        self.assertEqual(len(anomalies), 1)
         anomaly = anomalies[0]
         s, e = anomaly.get_time_window()
-        self.assertEquals(s, 4)
-        self.assertEquals(e, 39)
+        self.assertEqual(s, 4)
+        self.assertEqual(e, 39)
 
         # score should be roughly 98.5
         self.assertGreater(anomaly.anomaly_score, 98)
@@ -416,7 +416,6 @@ class CustomAlgo(AnomalyDetectorAlgorithm):
             super(CustomAlgo, self).__init__(self.__class__.__name__, time_series, baseline_time_series)
             self.percent_threshold_upper = percent_threshold_upper
             self.percent_threshold_lower = percent_threshold_lower
-            print "CustomAlgo being initiated"
 
       def _set_scores(self):
             """
