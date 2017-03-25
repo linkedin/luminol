@@ -399,51 +399,28 @@ class TestAnomalyDetector(unittest.TestCase):
         detector1 = AnomalyDetector(self.s1, score_percent_threshold=0.1, algorithm_name='derivative_detector')
         self.assertNotEqual(detector1.get_anomalies(), detector.get_anomalies())
 
+
+
 class CustomAlgo(AnomalyDetectorAlgorithm):
+  """
+  Copy of DiffPercentThreshold Algorithm from algorithms/anomaly_detector_algorithms/diff_percent_threshold.py to test
+  whether passing a AnomalyDetectorAlgorithm class works for AnomalyDetector module
+  """
+  def __init__(self, time_series, baseline_time_series, percent_threshold_upper=None, percent_threshold_lower=None):
     """
-
-    Copy of DiffPercentThreshold Algorithm from algorithms/anomaly_detector_algorithms/diff_percent_threshold.py to test
-    whether passing a AnomalyDetectorAlgorithm class works for AnomalyDetector module
+    :param time_series: current time series
+    :param baseline_time_series: baseline time series
+    :param percent_threshold_upper: If time_series is larger than baseline_time_series by this percent, then its
+    an anomaly
+    :param percent_threshold_lower: If time_series is smaller than baseline_time_series by this percent, then its
+    an anomaly
     """
-    def __init__(self, time_series, baseline_time_series, percent_threshold_upper=None, percent_threshold_lower=None):
-        """
-        :param time_series: current time series
-        :param baseline_time_series: baseline time series
-        :param percent_threshold_upper: If time_series is larger than baseline_time_series by this percent, then its
-        an anomaly
-        :param percent_threshold_lower: If time_series is smaller than baseline_time_series by this percent, then its
-        an anomaly
-        """
-        super(CustomAlgo, self).__init__(self.__class__.__name__, time_series, baseline_time_series)
-        self.percent_threshold_upper = percent_threshold_upper
-        self.percent_threshold_lower = percent_threshold_lower
-        print "CustomAlgo being initiated"
+    super(CustomAlgo, self).__init__(self.__class__.__name__, time_series, baseline_time_series)
+    self.percent_threshold_upper = percent_threshold_upper
+    self.percent_threshold_lower = percent_threshold_lower
+    print "CustomAlgo being initiated"
 
-    def _set_scores(self):
-        """
-        Compute anomaly scores for the time series
-        This algorithm just takes the diff of threshold with current value as anomaly score
-        """
-        anom_scores = {}
-        for i, (timestamp, value) in enumerate(self.time_series.items()):
-
-            baseline_value = self.baseline_time_series[i]
-
-            if baseline_value > 0:
-                diff_percent = 100 * (value - baseline_value) / baseline_value
-            elif value > 0:
-                diff_percent = 100.0
-            else:
-                diff_percent = 0.0
-
-            anom_scores[timestamp] = 0.0
-            if self.percent_threshold_upper and diff_percent > 0 and diff_percent > self.percent_threshold_upper:
-                anom_scores[timestamp] = diff_percent
-            if self.percent_threshold_lower and diff_percent < 0 and diff_percent < self.percent_threshold_lower:
-                anom_scores[timestamp] = -1 * diff_percent
-
-        self.anom_scores = TimeSeries(self._denoise_scores(anom_scores))
-
+  def _set_scores(self):
     """
     Compute anomaly scores for the time series
     This algorithm just takes the diff of threshold with current value as anomaly score
