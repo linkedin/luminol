@@ -8,5 +8,5 @@ install:
   - pip install -r requirements.txt
   - pip install pylama pytest pytest-cov
 
-before_script: python -m pylama src/ || true
+before_script: pylama -i E501,E111,E127,E128,E402,E303 src/ || true
 script: python -m pytest --cov=src/ src/luminol/tests/
