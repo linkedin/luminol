@@ -176,30 +176,50 @@ The **Correlator** class has the following public methods:
 * `is_correlated(threshold=0.7)`: if coefficient above the passed in threshold, return a [CorrelationResult](#modules) object. Otherwise, return false.
 
 ### Example
-1. Put anomaly scores in a list.
+1. Calculate anomaly scores.
 
 ```python
 from luminol.anomaly_detector import AnomalyDetector
 
+ts = {0: 0, 1: 0.5, 2: 1, 3: 1, 4: 1, 5: 0, 6: 0, 7: 0, 8: 0}
+
 my_detector = AnomalyDetector(ts)
 score = my_detector.get_all_scores()
-anom_score = list()
-for (timestamp, value) in score.iteritems():
-    t_str = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
-    anom_score.append([t_str, value])
+for timestamp, value in score.iteritems():
+    print(timestamp, value)
+
+""" Output:
+0 0.0
+1 0.873128250131
+2 1.57163085024
+3 2.13633686334
+4 1.70906949067
+5 2.90541813415
+6 1.17154110935
+7 0.937232887479
+8 0.749786309983
+"""
 ```
 
-2. Correlate with ts2 on every anomaly.
+2. Correlate ts1 with ts2 on every anomaly.
 
 ```python
 from luminol.anomaly_detector import AnomalyDetector
 from luminol.correlator import Correlator
 
-my_detector = detector.AnomalyDetector(ts)
+ts1 = {0: 0, 1: 0.5, 2: 1, 3: 1, 4: 1, 5: 0, 6: 0, 7: 0, 8: 0}
+ts2 = {0: 0, 0: 0.5, 2: 1, 3: 0.5, 4: 1, 5: 0, 6: 1, 7: 1, 8: 1}
+
+my_detector = AnomalyDetector(ts1, score_threshold=1.5)
+score = my_detector.get_all_scores()
 anomalies = my_detector.get_anomalies()
 for a in anomalies:
     time_period = a.get_time_window()
-    my_correlator = Correlator(ts, ts2, time_period)
+    my_correlator = Correlator(ts1, ts2, time_period)
     if my_correlator.is_correlated(threshold=0.8):
-        print("ts2 correlate with ts at time period (%d, %d)" % time_period)
+        print("ts2 correlate with ts1 at time period (%d, %d)" % time_period)
+
+""" Output:
+ts2 correlates with ts1 at time period (2, 5)
+"""
 ```
