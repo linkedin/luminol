@@ -4,9 +4,9 @@ python:
   - 3.6
 
 before_install: sudo apt-get install -qq python-numpy python-scipy
-
 install:
   - pip install -r requirements.txt
-  - pip install pytest pytest-cov
+  - pip install pylama pytest pytest-cov
 
+before_script: python -m pylama src/
 script: python -m pytest --cov=src/ src/luminol/tests/
