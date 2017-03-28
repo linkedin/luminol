@@ -1,14 +1,3 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
 import numpy as np
 
 from luminol import exceptions
@@ -33,28 +22,28 @@ class SignTest(AnomalyDetectorAlgorithm):
     For example, a lower threshold of -20 will detect a 20 percent decrease when compared against baseline.
 
     This algorithm assumes that time_series and baseline_time_series are perfectly aligned, meaning that:
-     a) every timestamp that exists in time_series also exists in baseline_time_series
-     b) lengths of both time series are same
-     c) the test window must not be larger than the time series
+    a) every timestamp that exists in time_series also exists in baseline_time_series
+    b) lengths of both time series are same
+    c) the test window must not be larger than the time series
     """
     def __init__(self, time_series, baseline_time_series,
-                             percent_threshold_upper=None,
-                             percent_threshold_lower=None,
-                             offset=0.0,
-                             scan_window=None,
-                             confidence=0.01):
+                 percent_threshold_upper=None, percent_threshold_lower=None,
+                 offset=0.0, scan_window=None, confidence=0.01):
         """
         :param time_series: current time series
         :param baseline_time_series: baseline time series
-        :param percent_threshold_upper: If time_series is larger than baseline_time_series by this percent, then its
-        a candidate for an anomaly
-        :param percent_threshold_lower: If time_series is smaller than baseline_time_series by this percent, then its
-        a candidate for an anomaly. Percent_threshold_lower should be a negative number to work as intended.
-        :param offset: baseline will be adjusted by this amount prior to computing percentage
-                                 TimeSeries > offset +    (1 + percent_threshold_upper/100) * Baseline
-                                 or for lower value
-                                 TimeSeries < offset +    (1 + percent_threshold_lower/100) * Baseline
-        :param scan_window: number of data points to evaluate for anomalies default of 24 = 5 minute period for 2 hours
+        :param percent_threshold_upper: If time_series is larger than
+            baseline_time_series by this percent, then its a candidate for an anomaly
+        :param percent_threshold_lower: If time_series is smaller than
+            baseline_time_series by this percent, then its a candidate for an
+            anomaly. Percent_threshold_lower should be a negative number to work
+            as intended.
+        :param offset: baseline will be adjusted by this amount prior to
+            computing percentage
+            TimeSeries > offset +  (1 + percent_threshold_upper/100) * Baseline
+            or for lower value TimeSeries < offset + (1 + percent_threshold_lower/100) * Baseline
+        :param scan_window: number of data points to evaluate for anomalies
+            default of 24 = 5 minute period for 2 hours
         :param confidence: Confidence to use for determining anomaly, default is 0.01
         :return:
         """
@@ -65,12 +54,14 @@ class SignTest(AnomalyDetectorAlgorithm):
                     Either percent_threshold_upper or percent_threshold_lower is needed')
 
         if percent_threshold_upper is not None and percent_threshold_lower is not None:
-            raise exceptions.RequiredParametersNotPassed('luminol.algorithms.anomaly_detector_algorithms.sign_test: \
-                    Cannot specify both percent_threshold_upper and percent_threshold_lower')
+            raise exceptions.RequiredParametersNotPassed(
+                'luminol.algorithms.anomaly_detector_algorithms.sign_test: ' +
+                'Cannot specify both percent_threshold_upper and percent_threshold_lower')
 
         if not scan_window:
-            raise exceptions.RequiredParametersNotPassed('luminol.algorithms.anomaly_detector_algorithms.sign_test: \
-                    scan window size needs to be specified')
+            raise exceptions.RequiredParametersNotPassed(
+                'luminol.algorithms.anomaly_detector_algorithms.sign_test: ' +
+                ' scan window size needs to be specified')
 
         # make assignements
         self.scan_window = scan_window
@@ -91,20 +82,15 @@ class SignTest(AnomalyDetectorAlgorithm):
         """
 
         scores = np.zeros(len(self.time_series.values))
-
         anomalies = SignTest._rolling_sign_test(self.scale * np.array(self.time_series.values),
-                                                                                        self.scale * np.array(self.baseline_time_series.values),
-                                                                                        k=self.scan_window,
-                                                                                        conf=self.confidence,
-                                                                                        alpha=float(self.percent_threshold) / 100,
-                                                                                        offset=self.scale * self.offset)
+            self.scale * np.array(self.baseline_time_series.values), k=self.scan_window,
+            conf=self.confidence, alpha=float(self.percent_threshold) / 100,
+            offset=self.scale * self.offset)
         for (s, e), prob in anomalies:
             scores[s:e] = 100 * prob
-
         scores_dict = dict()
         for i, timestamp in enumerate(self.time_series.timestamps):
             scores_dict[timestamp] = scores[i]
-
         self.anom_scores = TimeSeries(scores_dict)
 
     @staticmethod
@@ -159,13 +145,9 @@ class SignTest(AnomalyDetectorAlgorithm):
 
         # this is 1 if bigger 0 otherwise
         d = np.fmax(np.sign(x - offset - (1. + alpha) * y), 0)
-
         con = np.convolve(f, d, mode='valid')
-
         a = np.fmax(con - qthresh, 0)
-
         ranges = [(t[0], t[0] + k) for t in np.argwhere(a)]
-
         ranges = SignTest._merge_ranges(ranges, gap)
 
         # compute score

@@ -1,18 +1,8 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
+from luminol.constants import DEFAULT_NOISE_PCT_THRESHOLD
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
-from luminol.constants import *
-
-__all__ = ['bitmap_detector', 'derivative_detector', 'exp_avg_detector', 'default_detector', 'absolute_threshold',
-                     'diff_percent_threshold', 'sign_test']
+__all__ = ['bitmap_detector', 'derivative_detector', 'exp_avg_detector',
+    'default_detector', 'absolute_threshold', 'diff_percent_threshold',
+    'sign_test']
 
 
 class AnomalyDetectorAlgorithm(object):
@@ -43,7 +33,8 @@ class AnomalyDetectorAlgorithm(object):
     def _denoise_scores(self, scores):
         """
         Denoise anomaly scores.
-        Low anomaly scores could be noisy. The following two series will have good correlation result with out denoise:
+        Low anomaly scores could be noisy. The following two series will have
+        good correlation result with out denoise:
         [0.08, 4.6, 4.6, 4.6, 1.0, 1.0]
         [0.0010, 0.0012, 0.0012, 0.0008, 0.0008]
         while the second series is pretty flat(suppose it has a max score of 100).

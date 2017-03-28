@@ -1,18 +1,5 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
-
-from luminol import utils, exceptions
+from luminol import exceptions
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
 
 
@@ -21,8 +8,8 @@ class AbsoluteThreshold(AnomalyDetectorAlgorithm):
     Anomalies are those data points that are above a pre-specified threshold value.
     This algorithm does not take baseline time series.
     """
-    def __init__(self, time_series, absolute_threshold_value_upper=None, absolute_threshold_value_lower=None,
-                             baseline_time_series=None):
+    def __init__(self, time_series, absolute_threshold_value_upper=None,
+                 absolute_threshold_value_lower=None, baseline_time_series=None):
         """
         Initialize algorithm, check all required args are present
 
@@ -36,9 +23,10 @@ class AbsoluteThreshold(AnomalyDetectorAlgorithm):
         self.absolute_threshold_value_upper = absolute_threshold_value_upper
         self.absolute_threshold_value_lower = absolute_threshold_value_lower
         if not self.absolute_threshold_value_lower and not self.absolute_threshold_value_upper:
-            raise exceptions.RequiredParametersNotPassed('luminol.algorithms.anomaly_detector_algorithms.absolute_threshold: '
-                                                                                                     'Either absolute_threshold_value_upper or '
-                                                                                                     'absolute_threshold_value_lower needed')
+            raise exceptions.RequiredParametersNotPassed(
+                'luminol.algorithms.anomaly_detector_algorithms.absolute_threshold: '
+                'Either absolute_threshold_value_upper or '
+                'absolute_threshold_value_lower needed')
 
     def _set_scores(self):
         """

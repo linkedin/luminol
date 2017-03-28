@@ -1,16 +1,5 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
-from future.utils import implements_iterator
 from builtins import map
+from six import advance_iterator
 import numpy
 
 
@@ -101,7 +90,6 @@ class TimeSeries(object):
     def __eq__(self, other):
         if len(self.timestamps) != len(other.timestamps):
             return False
-
         for pos, ts in enumerate(self.timestamps):
             if ts != other.timestamps[pos] or self.values[pos] != other.values[pos]:
                 return False
@@ -154,8 +142,8 @@ class TimeSeries(object):
         Perform the method operation specified in the op parameter on the values
         within the instance's time series values and either another time series
         or a constant number value.
-
-        :param other: Time series of values or a constant number to use in calculations with instance's time series.
+        :param other: Time series of values or a constant number to use in
+            calculations with instance's time series.
         :param func op: The method to perform the calculation between the values.
         :return: :class:`TimeSeries` object.
         """
@@ -208,14 +196,15 @@ class TimeSeries(object):
 
     def align(self, other):
         """
-        Align two time series so that len(self) == len(other) and self.timstamps == other.timestamps.
-
-        :return: :tuple:(`TimeSeries` object(the aligned self), `TimeSeries` object(the aligned other))
+        Align two time series so that len(self) == len(other) and self.timstamps
+        == other.timestamps.
+        :return: :tuple:(`TimeSeries` object(the aligned self),
+            `TimeSeries` object(the aligned other))
         """
         if isinstance(other, TimeSeries):
             aligned, other_aligned = {}, {}
             i, other_i = self.iteritems_silent(), other.iteritems_silent()
-            item, other_item = next(i), next(other_i)
+            item, other_item = advance_iterator(i), advance_iterator(other_i)
 
             while item and other_item:
                 # Unpack timestamps and values.
@@ -224,34 +213,34 @@ class TimeSeries(object):
                 if timestamp == other_timestamp:
                     aligned[timestamp] = value
                     other_aligned[other_timestamp] = other_value
-                    item = next(i)
-                    other_item = next(other_i)
+                    item = advance_iterator(i)
+                    other_item = advance_iterator(other_i)
                 elif timestamp < other_timestamp:
                     aligned[timestamp] = value
                     other_aligned[timestamp] = other_value
-                    item = next(i)
+                    item = advance_iterator(i)
                 else:
                     aligned[other_timestamp] = value
                     other_aligned[other_timestamp] = other_value
-                    other_item = next(other_i)
+                    other_item = advance_iterator(other_i)
             # Align remaining items.
             while item:
                 timestamp, value = item
                 aligned[timestamp] = value
                 other_aligned[timestamp] = other.values[-1]
-                item = next(i)
+                item = advance_iterator(i)
             while other_item:
                 other_timestamp, other_value = other_item
                 aligned[other_timestamp] = self.values[-1]
                 other_aligned[other_timestamp] = other_value
-                other_item = next(other_i)
+                other_item = advance_iterator(other_i)
             return TimeSeries(aligned), TimeSeries(other_aligned)
 
     def smooth(self, smoothing_factor):
         """
-        return a new time series which is a exponential smoothed version of the original data series.
-        soomth forward once, backward once, and then take the average.
-
+        return a new time series which is a exponential smoothed version of the
+        original data series. Smooth forward once, backward once, and then take
+        the average.
         :param float smoothing_factor: smoothing factor
         :return: :class:`TimeSeries` object.
         """
@@ -261,13 +250,13 @@ class TimeSeries(object):
 
         if self:
             pre = self.values[0]
-            next = self.values[-1]
+            nxt = self.values[-1]
             for key, value in self.items():
                 forward_smooth[key] = smoothing_factor * pre + (1 - smoothing_factor) * value
                 pre = forward_smooth[key]
             for key, value in reversed(self.items()):
-                backward_smooth[key] = smoothing_factor * next + (1 - smoothing_factor) * value
-                next = backward_smooth[key]
+                backward_smooth[key] = smoothing_factor * nxt + (1 - smoothing_factor) * value
+                nxt = backward_smooth[key]
             for key in forward_smooth.keys():
                 output[key] = (forward_smooth[key] + backward_smooth[key]) / 2
 
@@ -276,7 +265,6 @@ class TimeSeries(object):
     def add_offset(self, offset):
         """
         Return a new time series with all timestamps incremented by some offset.
-
         :param int offset: The number of seconds to offset the time series.
         :return: `None`
         """
@@ -285,7 +273,6 @@ class TimeSeries(object):
     def normalize(self):
         """
         Return a new time series with all values normalized to 0 to 1.
-
         :return: `None`
         """
         maximum = self.max()
@@ -294,9 +281,8 @@ class TimeSeries(object):
 
     def crop(self, start_timestamp, end_timestamp):
         """
-        Return a new TimeSeries object contains all the timstamps and values within
-        the specified range.
-
+        Return a new TimeSeries object contains all the timstamps and values
+        within the specified range.
         :param int start_timestamp: the start timestamp value
         :param int end_timestamp: the end timestamp value
         :return: :class:`TimeSeries` object.
@@ -314,8 +300,8 @@ class TimeSeries(object):
     def average(self, default=None):
         """
         Calculate the average value over the time series.
-
-        :param default: Value to return as a default should the calculation not be possible.
+        :param default: Value to return as a default should the calculation not
+            be possible.
         :return: Float representing the average value or `None`.
         """
         return numpy.asscalar(numpy.average(self.values)) if self.values else default
@@ -323,7 +309,6 @@ class TimeSeries(object):
     def median(self, default=None):
         """
         Calculate the median value over the time series.
-
         :param default: Value to return as a default should the calculation not be possible.
         :return: Float representing the median value or `None`.
         """
@@ -332,7 +317,6 @@ class TimeSeries(object):
     def max(self, default=None):
         """
         Calculate the maximum value over the time series.
-
         :param default: Value to return as a default should the calculation not be possible.
         :return: Float representing the maximum value or `None`.
         """
@@ -341,8 +325,8 @@ class TimeSeries(object):
     def min(self, default=None):
         """
         Calculate the minimum value over the time series.
-
-        :param default: Value to return as a default should the calculation not be possible.
+        :param default: Value to return as a default should the calculation not
+        be possible.
         :return: Float representing the maximum value or `None`.
         """
         return numpy.asscalar(numpy.min(self.values)) if self.values else default
@@ -350,9 +334,9 @@ class TimeSeries(object):
     def percentile(self, n, default=None):
         """
         Calculate the Nth Percentile value over the time series.
-
         :param int n: Integer value of the percentile to calculate.
-        :param default: Value to return as a default should the calculation not be possible.
+        :param default: Value to return as a default should the calculation not
+            be possible.
         :return: Float representing the Nth percentile value or `None`.
         """
         return numpy.asscalar(numpy.percentile(self.values, n)) if self.values else default
@@ -360,8 +344,8 @@ class TimeSeries(object):
     def stdev(self, default=None):
         """
         Calculate the standard deviation of the time series.
-
-        :param default: Value to return as a default should the calculation not be possible.
+        :param default: Value to return as a default should the calculation not b
+            e possible.
         :return: Float representing the standard deviation value or `None`.
         """
         return numpy.asscalar(numpy.std(self.values)) if self.values else default
@@ -369,8 +353,8 @@ class TimeSeries(object):
     def sum(self, default=None):
         """
         Calculate the sum of all the values in the times series.
-
-        :param default: Value to return as a default should the calculation not be possible.
+        :param default: Value to return as a default should the calculation not
+            be possible.
         :return: Float representing the sum or `None`.
         """
         return numpy.asscalar(numpy.sum(self.values)) if self.values else default

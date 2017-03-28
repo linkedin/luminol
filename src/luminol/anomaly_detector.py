@@ -1,46 +1,39 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
+from luminol import exceptions, utils
+from luminol.algorithms.anomaly_detector_algorithms.all import anomaly_detector_algorithms
+from luminol.modules.anomaly import Anomaly
+from luminol.modules.time_series import TimeSeries
+from luminol.constants import (DEFAULT_SCORE_PERCENT_THRESHOLD,
+    ANOMALY_DETECTOR_REFINE_ALGORITHM, ANOMALY_THRESHOLD,
+    ANOMALY_DETECTOR_ALGORITHM)
 
 """
 API for Anomaly Detector Module
 This module detects anomalies in a single time series.
 """
 
-from luminol import exceptions, utils
-from luminol.algorithms.anomaly_detector_algorithms.all import anomaly_detector_algorithms
-from luminol.constants import *
-from luminol.modules.anomaly import Anomaly
-from luminol.modules.time_series import TimeSeries
-
 
 class AnomalyDetector(object):
 
-    def __init__(self, time_series, baseline_time_series=None, score_only=False, score_threshold=None,
-                 score_percent_threshold=None, algorithm_name=None, algorithm_params=None, refine_algorithm_name=None,
-                 refine_algorithm_params=None, algorithm_class=None):
+    def __init__(self, time_series, baseline_time_series=None, score_only=False,
+                 score_threshold=None, score_percent_threshold=None,
+                 algorithm_name=None, algorithm_params=None,
+                 refine_algorithm_name=None, refine_algorithm_params=None,
+                 algorithm_class=None):
         """
         Initializer
         :param time_series: a TimeSeries, a dictionary or a path to a csv file(str).
         :param baseline_time_series: a TimeSeries, a dictionary or a path to a csv file(str).
         :param bool score_only: if asserted, only anomaly scores are computed.
-        :param float score_percent_threshold: percent threshold on anomaly score above which is considered an anomaly.
+        :param float score_percent_threshold: percent threshold on anomaly score
+            above which is considered an anomaly.
         :param str algorithm_name: name of the algorithm to use(file name).
         :param dict algorithm_params: additional params for the specific algorithm.
         :param str refine_algorithm_name: name of the refine algorithm to use(file name).
         :param dict refine_algorithm_params: additional params for the specific refine algorithm.
-        :param AnomalyDetectorAlgorithm algorithm_class: A AnomalyDetectorAlgorithm class that when passed to luminol will
-            be used to assign anomaly scores. This is useful when luminol user wants to use a custom algorithm.
+        :param AnomalyDetectorAlgorithm algorithm_class: A AnomalyDetectorAlgorithm
+            class that when passed to luminol will be used to assign anomaly scores.
+            This is useful when luminol user wants to use a custom algorithm.
         """
-
         self.time_series = self._load(time_series)
         self.baseline_time_series = self._load(baseline_time_series)
         self.score_percent_threshold = score_percent_threshold or DEFAULT_SCORE_PERCENT_THRESHOLD

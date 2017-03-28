@@ -1,24 +1,9 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
-"""
-Utilities for luminol
-"""
-# from __future__ import unicode_literals
 import csv
 import datetime
 import time
-
-from luminol import constants, exceptions
 from scipy.stats import binom
+from luminol import constants, exceptions
+
 
 def compute_ema(smoothing_factor, points):
     """
@@ -67,12 +52,12 @@ def to_epoch(t_str):
     try:
         t = float(t_str)
         return t
-    except:
+    except BaseException:
         for format in constants.TIMESTAMP_STR_FORMATS:
             try:
                 t = datetime.datetime.strptime(t_str, format)
                 return float(time.mktime(t.utctimetuple()) * 1000.0 + t.microsecond / 1000.0)
-            except:
+            except BaseException:
                 pass
     raise exceptions.InvalidDataFormat
 
@@ -87,7 +72,6 @@ def qbinom(p, n):
     :param p: quantile level
     :return: k
     """
-
     return binom.ppf(p, n, 0.5)
 
 
@@ -99,5 +83,4 @@ def pbinom(k, n):
     :param n:
     :return: cumulative probability
     """
-
     return binom.cdf(k, n, 0.5)
