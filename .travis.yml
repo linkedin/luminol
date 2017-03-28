@@ -6,7 +6,7 @@ python:
 before_install: sudo apt-get install -qq python-numpy python-scipy
 install:
   - pip install -r requirements.txt
-  - pip install pylama pytest pytest-cov
+  - pip install pytest pytest-cov pylama
 
-before_script: python -m pylama -i E501 luminol/
 script: python -m pytest --cov=luminol/ tests/
+after_script: python -m pylama -i E501 luminol/ || true
