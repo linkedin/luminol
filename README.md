@@ -214,5 +214,5 @@ pip install pytest pytest-cov pylama
 Tests and linting run with:
 
 ```bash
-pytest --cov=luminol/ tests/ && pylama -i E501 luminol/
+pytest -v --cov=luminol/ tests/ && pylama -i E501 luminol/
 ```
