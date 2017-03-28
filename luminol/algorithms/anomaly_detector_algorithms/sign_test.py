@@ -1,5 +1,4 @@
 import numpy as np
-
 from luminol import exceptions
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
 from luminol.utils import qbinom, pbinom
@@ -83,9 +82,11 @@ class SignTest(AnomalyDetectorAlgorithm):
 
         scores = np.zeros(len(self.time_series.values))
         anomalies = SignTest._rolling_sign_test(self.scale * np.array(self.time_series.values),
-            self.scale * np.array(self.baseline_time_series.values), k=self.scan_window,
-            conf=self.confidence, alpha=float(self.percent_threshold) / 100,
-            offset=self.scale * self.offset)
+                                                self.scale * np.array(self.baseline_time_series.values),
+                                                k=self.scan_window,
+                                                conf=self.confidence,
+                                                alpha=float(self.percent_threshold) / 100,
+                                                offset=self.scale * self.offset)
         for (s, e), prob in anomalies:
             scores[s:e] = 100 * prob
         scores_dict = dict()

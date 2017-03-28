@@ -38,7 +38,7 @@ class Correlator(object):
                 raise exceptions.NotEnoughDataPoints
         self._sanity_check()
         self.algorithm_params = {'time_series_a': self.time_series_a,
-            'time_series_b': self.time_series_b}
+                                 'time_series_b': self.time_series_b}
         self._get_algorithm_and_params(algorithm_name, algorithm_params)
         self._correlate()
 
@@ -72,12 +72,12 @@ class Correlator(object):
             self.algorithm = correlator_algorithms[algorithm_name]
         except KeyError:
             raise exceptions.AlgorithmNotFound('luminol.Correlator: ' +
-                str(algorithm_name) + ' not found.')
+                                               str(algorithm_name) + ' not found.')
         # Merge parameters.
         if algorithm_params:
             if not isinstance(algorithm_params, dict):
                 raise exceptions.InvalidDataFormat('luminol.Correlator: ' +
-                    'algorithm_params passed is not a dictionary.')
+                                                   'algorithm_params passed is not a dictionary.')
             else:
                 # self.algorithm_params = dict(algorithm_params.items() + self.algorithm_params.items())
                 self.algorithm_params = self.algorithm_params.copy()
