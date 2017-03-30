@@ -151,31 +151,12 @@ class TimeSeries(object):
         if isinstance(other, TimeSeries):
             for key, value in self.items():
                 if key in other:
-                    try:
-                        result = op(value, other[key])
-                        if result is NotImplemented:
-                            other_type = type(other[key])
-                            other_op = vars(other_type).get(op.__name__)
-                            if other_op:
-                                output[key] = other_op(other_type(value), other[key])
-                        else:
-                            output[key] = result
-                    except ZeroDivisionError:
-                        continue
+                    rabbit = other[key]
+                    output = wormhole(rabbit, op, key, value, output)
         else:
+            rabbit = other
             for key, value in self.items():
-                try:
-                    result = op(value, other)
-                    if result is NotImplemented:
-                        other_type = type(other)
-                        other_op = vars(other_type).get(op.__name__)
-                        if other_op:
-                            output[key] = other_op(other_type(value), other)
-                    else:
-                        output[key] = result
-                except ZeroDivisionError:
-                    continue
-
+                output = wormhole(rabbit, op, key, value, output)
         if output:
             return TimeSeries(output)
         else:
@@ -358,3 +339,23 @@ class TimeSeries(object):
         :return: Float representing the sum or `None`.
         """
         return numpy.asscalar(numpy.sum(self.values)) if self.values else default
+
+
+def wormhole(rabbit, op, key, value, output):
+    """
+    A feable attempt to simplify _generic_binary_op flagged by pylama for
+    looking like a logic bomb:
+        C901 'TimeSeries._generic_binary_op' is too complex (14) [mccabe]
+    """
+    try:
+        result = op(value, rabbit)
+        if result is NotImplemented:
+            other_type = type(rabbit)
+            other_op = vars(other_type).get(op.__name__)
+            if other_op:
+                output[key] = other_op(other_type(value), rabbit)
+        else:
+            output[key] = result
+    except ZeroDivisionError:
+        pass  # continue
+    return output
