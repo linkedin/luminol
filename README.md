@@ -95,11 +95,11 @@ The library contains two classes: `AnomalyDetector` and `Correlator`, and there 
 _class_ luminol.anomaly_detector.**AnomalyDetecor**
 ```python
 __init__(self, time_series, baseline_time_series=None, score_only=False, score_threshold=None,
-score_percentile_threshold=None, algorithm_name=None, algorithm_params=None, 
+score_percentile_threshold=None, algorithm_name=None, algorithm_params=None,
 refine_algorithm_name=None, refine_algorithm_params=None)
 ```
 *  `time_series`: The metric you want to conduct anomaly detection on. It can have the following three types:
-   
+
    ```python
    1. string: # path to a csv file
    2. dict: # timestamp -> value
@@ -115,7 +115,7 @@ refine_algorithm_name=None, refine_algorithm_params=None)
 * `refine_algorithm_params(dict)`: additional parameters for algorithm specified by refine_algorithm_params.
 
 Available algorithms and their additional parameters are:
-  
+
   ```python
   1. 'bitmap_detector': # behaves well for huge data sets, and it is the default detector.
      {
@@ -142,7 +142,7 @@ Available algorithms and their additional parameters are:
 It may seem vague for the meanings of some parameters above. Here are some useful insights:
 * [Bitmap](http://alumni.cs.ucr.edu/~ratana/SSDBM05.pdf)
 * [Exponential Moving Avg](http://en.wikipedia.org/wiki/Exponential_smoothing)
- 
+
 The **AnomalyDetector** class has the following public methods:
 * `get_all_scores()`: returns an anomaly score time series of type [TimeSeries](#modules).
 * `get_anomalies()`: return a list of [Anomaly](#modules) objects.
@@ -189,7 +189,7 @@ The **Correlator** class has the following public methods:
    ```
 
 2. Correlate with ts2 on every anomaly.
-    
+
    ```python
    from luminol.anomaly_detector import AnomalyDetector
    from luminol.correlator import Correlator
@@ -200,5 +200,19 @@ The **Correlator** class has the following public methods:
      time_period = a.get_time_window()
      my_correlator = Correlator(ts, ts2, time_period)
      if my_correlator.is_correlated(threshold=0.8):
-       print "ts2 correlate with ts at time period (%d, %d)" % time_period 
+       print "ts2 correlate with ts at time period (%d, %d)" % time_period
    ```
+
+### Contributing
+Clone source and install package and dev requirements:
+
+```bash
+pip install -r requirements.txt
+pip install pytest pytest-cov pylama
+```
+
+Tests and linting run with:
+
+```bash
+pytest -v --cov=luminol/ tests/ && pylama -i E501 luminol/
+```
