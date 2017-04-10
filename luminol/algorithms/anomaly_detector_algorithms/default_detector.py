@@ -1,19 +1,9 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
-from exp_avg_detector import ExpAvgDetector
-from derivative_detector import DerivativeDetector
+from luminol.algorithms.anomaly_detector_algorithms.exp_avg_detector import ExpAvgDetector
+from luminol.algorithms.anomaly_detector_algorithms.derivative_detector import DerivativeDetector
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
+from luminol.constants import (DEFAULT_DETECTOR_EMA_WEIGHT,
+                               DEFAULT_DETECTOR_EMA_SIGNIFICANT)
 
 
 class DefaultDetector(AnomalyDetectorAlgorithm):
@@ -41,7 +31,8 @@ class DefaultDetector(AnomalyDetectorAlgorithm):
         for timestamp in anom_scores_ema.timestamps:
             # Compute a weighted anomaly score.
             anom_scores[timestamp] = max(anom_scores_ema[timestamp],
-                                                                     anom_scores_ema[timestamp] * DEFAULT_DETECTOR_EMA_WEIGHT + anom_scores_deri[timestamp] * (1 - DEFAULT_DETECTOR_EMA_WEIGHT))
+                                         anom_scores_ema[timestamp] * DEFAULT_DETECTOR_EMA_WEIGHT +
+                                         anom_scores_deri[timestamp] * (1 - DEFAULT_DETECTOR_EMA_WEIGHT))
             # If ema score is significant enough, take the bigger one of the weighted score and deri score.
             if anom_scores_ema[timestamp] > DEFAULT_DETECTOR_EMA_SIGNIFICANT:
                 anom_scores[timestamp] = max(anom_scores[timestamp], anom_scores_deri[timestamp])

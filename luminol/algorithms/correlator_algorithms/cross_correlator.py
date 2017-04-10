@@ -1,17 +1,7 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
+from builtins import map
 from luminol.algorithms.correlator_algorithms import CorrelatorAlgorithm
-from luminol.constants import *
 from luminol.modules.correlation_result import CorrelationResult
+from luminol.constants import (DEFAULT_SHIFT_IMPACT, DEFAULT_ALLOWED_SHIFT_SECONDS, )
 
 
 class CrossCorrelator(CorrelatorAlgorithm):
@@ -87,7 +77,7 @@ class CrossCorrelator(CorrelatorAlgorithm):
         param list timestamps: timestamps of a time series.
         """
         init_ts = timestamps[0]
-        residual_timestamps = map(lambda ts: ts - init_ts, timestamps)
+        residual_timestamps = list(map(lambda ts: ts - init_ts, timestamps))
         n = len(residual_timestamps)
         return self._find_first_bigger(residual_timestamps, self.max_shift_milliseconds, 0, n)
 
@@ -101,6 +91,7 @@ class CrossCorrelator(CorrelatorAlgorithm):
         """
         while lower_bound < upper_bound:
             pos = lower_bound + (upper_bound - lower_bound) / 2
+            pos = int(pos)
             if timestamps[pos] > target:
                 upper_bound = pos
             else:

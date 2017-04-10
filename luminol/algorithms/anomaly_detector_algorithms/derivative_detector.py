@@ -1,20 +1,9 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
 import numpy
 
 from luminol import utils
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
+from luminol.constants import DEFAULT_DERI_SMOOTHING_FACTOR
 
 
 class DerivativeDetector(AnomalyDetectorAlgorithm):
@@ -63,7 +52,7 @@ class DerivativeDetector(AnomalyDetectorAlgorithm):
         derivatives_ema = utils.compute_ema(self.smoothing_factor, self.derivatives)
         for i, (timestamp, value) in enumerate(self.time_series_items):
             anom_scores[timestamp] = abs(self.derivatives[i] - derivatives_ema[i])
-        stdev = numpy.std(anom_scores.values())
+        stdev = numpy.std(list(anom_scores.values()))
         if stdev:
                 for timestamp in anom_scores.keys():
                     anom_scores[timestamp] /= stdev

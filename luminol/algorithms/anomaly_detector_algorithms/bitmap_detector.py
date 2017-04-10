@@ -1,22 +1,16 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
 from collections import defaultdict
 from copy import copy
 import math
 
 from luminol import exceptions
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
+from luminol.constants import (DEFAULT_BITMAP_PRECISION,
+                               DEFAULT_BITMAP_CHUNK_SIZE,
+                               DEFAULT_BITMAP_LAGGING_WINDOW_SIZE_PCT,
+                               DEFAULT_BITMAP_MINIMAL_POINTS_IN_WINDOWS,
+                               DEFAULT_BITMAP_LEADING_WINDOW_SIZE_PCT,
+                               DEFAULT_BITMAP_MAXIMAL_POINTS_IN_WINDOWS)
 
 
 class BitmapDetector(AnomalyDetectorAlgorithm):
@@ -28,8 +22,8 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
     The ideas are from this paper:
     Assumption-Free Anomaly Detection in Time Series(http://alumni.cs.ucr.edu/~ratana/SSDBM05.pdf).
     """
-    def __init__(self, time_series, baseline_time_series=None, precision=None, lag_window_size=None,
-        future_window_size=None, chunk_size=None):
+    def __init__(self, time_series, baseline_time_series=None, precision=None,
+                 lag_window_size=None, future_window_size=None, chunk_size=None):
         """
         Initializer
         :param TimeSeries time_series: a TimeSeries object.
@@ -57,8 +51,7 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
         Check if there are enough data points.
         """
         windows = self.lag_window_size + self.future_window_size
-        if (not self.lag_window_size or not self.future_window_size
-            or self.time_series_length < windows or windows < DEFAULT_BITMAP_MINIMAL_POINTS_IN_WINDOWS):
+        if (not self.lag_window_size or not self.future_window_size or self.time_series_length < windows or windows < DEFAULT_BITMAP_MINIMAL_POINTS_IN_WINDOWS):
                 raise exceptions.NotEnoughDataPoints
 
         # If window size is too big, too many data points will be assigned a score of 0 in the first lag window
@@ -71,7 +64,8 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
     def _generate_SAX_single(self, sections, value):
         """
         Generate SAX representation(Symbolic Aggregate approXimation) for a single data point.
-        Read more about it here: Assumption-Free Anomaly Detection in Time Series(http://alumni.cs.ucr.edu/~ratana/SSDBM05.pdf).
+        Read more about it here: Assumption-Free Anomaly Detection in Time Series
+        (http://alumni.cs.ucr.edu/~ratana/SSDBM05.pdf).
         :param dict sections: value sections.
         :param float value: value to be categorized.
         :return str: a SAX representation.
@@ -116,12 +110,15 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
 
     def _construct_all_SAX_chunk_dict(self):
         """
-        Construct the chunk dicts for lagging window and future window at each index.
-         e.g: Suppose we have a SAX sequence as '1234567890', both window sizes are 3, and the chunk size is 2.
-         The first index that has a lagging window is 3. For index equals 3, the lagging window has sequence '123',
-         the chunk to leave lagging window(lw_leave_chunk) is '12', and the chunk to enter lagging window(lw_enter_chunk) is '34'.
-         Therefore, given chunk dicts at i, to compute chunk dicts at i+1, simply decrement the count for lw_leave_chunk,
-         and increment the count for lw_enter_chunk from chunk dicts at i. Same method applies to future window as well.
+        Construct the chunk dicts for lagging window and future window at each
+        index. e.g: Suppose we have a SAX sequence as '1234567890', both window
+        sizes are 3, and the chunk size is 2. The first index that has a lagging
+        window is 3. For index equals 3, the lagging window has sequence '123',
+        the chunk to leave lagging window(lw_leave_chunk) is '12', and the chunk
+        to enter lagging window(lw_enter_chunk) is '34'. Therefore, given chunk
+        dicts at i, to compute chunk dicts at i+1, simply decrement the count
+        for lw_leave_chunk, and increment the count for lw_enter_chunk from
+        chunk dicts at i. Same method applies to future window as well.
         """
         lag_dicts = {}
         fut_dicts = {}
@@ -172,7 +169,8 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
     def _compute_anom_score_between_two_windows(self, i):
         """
         Compute distance difference between two windows' chunk frequencies,
-        which is then marked as the anomaly score of the data point on the window boundary in the middle.
+        which is then marked as the anomaly score of the data point on the
+        window boundary in the middle.
         :param int i: index of the data point between two windows.
         :return float: the anomaly score.
         """
@@ -191,7 +189,8 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
 
     def _set_scores(self):
         """
-        Compute anomaly scores for the time series by sliding both lagging window and future window.
+        Compute anomaly scores for the time series by sliding both lagging
+        window and future window.
         """
         anom_scores = {}
         self._generate_SAX()

@@ -1,39 +1,32 @@
-# coding=utf-8
-"""
-© 2015 LinkedIn Corp. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"""
 import numpy
 
 from luminol import utils
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
+from luminol.constants import DEFAULT_EMA_SMOOTHING_FACTOR, DEFAULT_EMA_WINDOW_SIZE_PCT
 
 
 class ExpAvgDetector(AnomalyDetectorAlgorithm):
 
     """
     Exponential Moving Average.
-    This method uses a data point's deviation from the exponential moving average of a lagging window
-    to determine its anomaly score.
+    This method uses a data point's deviation from the exponential moving
+    average of a lagging window to determine its anomaly score.
     """
-    def __init__(self, time_series, baseline_time_series=None, smoothing_factor=None, use_lag_window=False, lag_window_size=None):
+    def __init__(self, time_series, baseline_time_series=None,
+                 smoothing_factor=None, use_lag_window=False, lag_window_size=None):
         """
         Initializer
         :param TimeSeries time_series: a TimeSeries object.
         :param TimeSeries baseline_time_series: baseline TimeSeries.
-        :param float smoothing_factor: smoothing factor for computing exponential moving average.
+        :param float smoothing_factor: smoothing factor for computing
+            exponential moving average.
         :param int lag_window_size: lagging window size.
         """
         super(ExpAvgDetector, self).__init__(self.__class__.__name__, time_series, baseline_time_series)
         self.use_lag_window = use_lag_window
+        if smoothing_factor is None:
+            smoothing_factor = 0
         self.smoothing_factor = smoothing_factor if smoothing_factor > 0 else DEFAULT_EMA_SMOOTHING_FACTOR
         self.lag_window_size = lag_window_size if lag_window_size else int(self.time_series_length * DEFAULT_EMA_WINDOW_SIZE_PCT)
         self.time_series_items = self.time_series.items()
