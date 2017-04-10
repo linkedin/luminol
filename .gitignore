@@ -26,6 +26,7 @@
 *.log
 *.sql
 *.sqlite
+.coverage
 
 # OS generated files #
 ######################
@@ -36,3 +37,5 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+.cache

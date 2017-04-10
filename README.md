@@ -105,6 +105,7 @@ refine_algorithm_name=None, refine_algorithm_params=None)
 2. dict: # timestamp -> value
 3. lumnol.modules.time_series.TimeSeries
 ```
+
 * `baseline_time_series`: an optional baseline time series of one the types mentioned above.
 * `score only(bool)`: if asserted, anomaly scores for the time series will be available, while anomaly periods will not be identified.
 * `score_threshold`: if passed, anomaly scores above this value will be identified as anomaly. It can override score_percentile_threshold.
@@ -222,4 +223,17 @@ for a in anomalies:
 """ Output:
 ts2 correlates with ts1 at time period (2, 5)
 """
+
+### Contributing
+Clone source and install package and dev requirements:
+
+```bash
+pip install -r requirements.txt
+pip install pytest pytest-cov pylama
+```
+
+Tests and linting run with:
+
+```bash
+pytest -v --cov=luminol/ tests/ && pylama -i E501 luminol/
 ```
