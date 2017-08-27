@@ -442,5 +442,6 @@ class CustomAlgo(AnomalyDetectorAlgorithm):
 
             self.anom_scores = TimeSeries(self._denoise_scores(anom_scores))
 
+
 if __name__ == '__main__':
-  unittest.main()
+    unittest.main()
