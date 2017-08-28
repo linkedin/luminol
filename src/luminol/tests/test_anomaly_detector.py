@@ -27,14 +27,14 @@ from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgori
 
 class TestAnomalyDetector(unittest.TestCase):
 
-  def setUp(self):
-    self.s1 = {0: 0, 1: 0, 2: 0, 3: 0, 4: 1, 5: 2, 6: 2, 7: 2, 8: 0}
-    self.s2 = {0: 0, 1: 1, 2: 2, 3: 2, 4: 2, 5: 0, 6: 0, 7: 0, 8: 0}
+    def setUp(self):
+        self.s1 = {0: 0, 1: 0, 2: 0, 3: 0, 4: 1, 5: 2, 6: 2, 7: 2, 8: 0}
+        self.s2 = {0: 0, 1: 1, 2: 2, 3: 2, 4: 2, 5: 0, 6: 0, 7: 0, 8: 0}
 
-    self.detector1 = AnomalyDetector(self.s1)
-    self.detector2 = AnomalyDetector(self.s2)
+        self.detector1 = AnomalyDetector(self.s1)
+        self.detector2 = AnomalyDetector(self.s2)
 
-  def test_custom_algorithm(self):
+    def test_custom_algorithm(self):
     """
     Test passing a custom algorithm class
     """
