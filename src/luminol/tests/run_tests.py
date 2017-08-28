@@ -106,5 +106,6 @@ class TestLuminol(unittest.TestCase):
         self.assertEqual(self.luminol.get_root_causes()['A'], 'm1')
         self.assertEqual(self.luminol.get_root_causes()['B'], 'm2')
 
+
 if __name__ == '__main__':
     unittest.main()
