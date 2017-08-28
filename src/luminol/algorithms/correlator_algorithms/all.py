@@ -12,5 +12,5 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 from luminol.algorithms.correlator_algorithms import *
 
 correlator_algorithms = {
-    'cross_correlator': cross_correlator.CrossCorrelator
+        'cross_correlator': cross_correlator.CrossCorrelator
 }

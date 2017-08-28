@@ -12,11 +12,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 from luminol.algorithms.anomaly_detector_algorithms import *
 
 anomaly_detector_algorithms = {
-    'bitmap_detector': bitmap_detector.BitmapDetector,
-    'default_detector': default_detector.DefaultDetector,
-    'derivative_detector': derivative_detector.DerivativeDetector,
-    'exp_avg_detector': exp_avg_detector.ExpAvgDetector,
-    'absolute_threshold': absolute_threshold.AbsoluteThreshold,
-    'diff_percent_threshold': diff_percent_threshold.DiffPercentThreshold,
-    'sign_test': sign_test.SignTest
+        'bitmap_detector': bitmap_detector.BitmapDetector,
+        'default_detector': default_detector.DefaultDetector,
+        'derivative_detector': derivative_detector.DerivativeDetector,
+        'exp_avg_detector': exp_avg_detector.ExpAvgDetector,
+        'absolute_threshold': absolute_threshold.AbsoluteThreshold,
+        'diff_percent_threshold': diff_percent_threshold.DiffPercentThreshold,
+        'sign_test': sign_test.SignTest
 }
