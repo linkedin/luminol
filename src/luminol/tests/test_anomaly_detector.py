@@ -402,7 +402,7 @@ class CustomAlgo(AnomalyDetectorAlgorithm):
         super(CustomAlgo, self).__init__(self.__class__.__name__, time_series, baseline_time_series)
         self.percent_threshold_upper = percent_threshold_upper
         self.percent_threshold_lower = percent_threshold_lower
-        print "CustomAlgo being initiated"
+        # print "CustomAlgo being initiated"
 
     def _set_scores(self):
         """
