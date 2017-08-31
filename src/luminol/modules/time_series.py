@@ -10,7 +10,6 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 from future.utils import implements_iterator
-from builtins import map
 import numpy
 
 
@@ -45,7 +44,7 @@ class TimeSeries(object):
         """
         Return list of timestamp values in order by milliseconds since epoch.
         """
-        return list(map(lambda ts: ts * 1000, self.timestamps))
+        return [ts * 1000 for ts in self.timestamps]
 
     def __repr__(self):
         return 'TimeSeries<start={0}, end={1}>'.format(repr(self.start), repr(self.end))
@@ -280,7 +279,7 @@ class TimeSeries(object):
         :param int offset: The number of seconds to offset the time series.
         :return: `None`
         """
-        self.timestamps = list(map(lambda ts: ts + offset, self.timestamps))
+        self.timestamps = [ts + offset for ts in self.timestamps]
 
     def normalize(self):
         """
@@ -290,7 +289,7 @@ class TimeSeries(object):
         """
         maximum = self.max()
         if maximum:
-            self.values = list(map(lambda value: value / maximum, self.values))
+            self.values = [value / maximum for value in self.values]
 
     def crop(self, start_timestamp, end_timestamp):
         """

@@ -9,7 +9,6 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
-from builtins import map
 from luminol.algorithms.correlator_algorithms import CorrelatorAlgorithm
 from luminol.constants import *
 from luminol.modules.correlation_result import CorrelationResult
@@ -88,7 +87,7 @@ class CrossCorrelator(CorrelatorAlgorithm):
         param list timestamps: timestamps of a time series.
         """
         init_ts = timestamps[0]
-        residual_timestamps = list(map(lambda ts: ts - init_ts, timestamps))
+        residual_timestamps = [ts - init_ts for ts in timestamps]
         n = len(residual_timestamps)
         return self._find_first_bigger(residual_timestamps, self.max_shift_milliseconds, 0, n)
 
