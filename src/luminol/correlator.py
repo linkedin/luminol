@@ -111,11 +111,9 @@ class Correlator(object):
         """
         return self.correlation_result
 
-    def is_correlated(self, threshold=None):
+    def is_correlated(self, threshold=0):
         """
         Compare with a threshold to determine whether two timeseries correlate to each other.
         :return: a CorrelationResult object if two time series correlate otherwise false.
         """
-        if threshold is None:
-            threshold = 0
         return self.correlation_result if self.correlation_result.coefficient >= threshold else False
