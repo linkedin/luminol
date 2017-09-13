@@ -87,7 +87,7 @@ class CrossCorrelator(CorrelatorAlgorithm):
         param list timestamps: timestamps of a time series.
         """
         init_ts = timestamps[0]
-        residual_timestamps = map(lambda ts: ts - init_ts, timestamps)
+        residual_timestamps = [ts - init_ts for ts in timestamps]
         n = len(residual_timestamps)
         return self._find_first_bigger(residual_timestamps, self.max_shift_milliseconds, 0, n)
 
@@ -101,6 +101,7 @@ class CrossCorrelator(CorrelatorAlgorithm):
         """
         while lower_bound < upper_bound:
             pos = lower_bound + (upper_bound - lower_bound) / 2
+            pos = int(pos)
             if timestamps[pos] > target:
                 upper_bound = pos
             else:

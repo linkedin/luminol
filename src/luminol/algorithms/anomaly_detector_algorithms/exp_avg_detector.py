@@ -24,7 +24,7 @@ class ExpAvgDetector(AnomalyDetectorAlgorithm):
     This method uses a data point's deviation from the exponential moving average of a lagging window
     to determine its anomaly score.
     """
-    def __init__(self, time_series, baseline_time_series=None, smoothing_factor=None, use_lag_window=False, lag_window_size=None):
+    def __init__(self, time_series, baseline_time_series=None, smoothing_factor=0, use_lag_window=False, lag_window_size=None):
         """
         Initializer
         :param TimeSeries time_series: a TimeSeries object.
