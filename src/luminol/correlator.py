@@ -17,7 +17,7 @@ This module finds correlation between two time series.
 from luminol import exceptions, utils
 from luminol.algorithms.correlator_algorithms.all import correlator_algorithms
 from luminol.anomaly_detector import AnomalyDetector
-from luminol.constants import *
+from luminol.constants import CORRELATOR_ALGORITHM
 from luminol.modules.time_series import TimeSeries
 
 

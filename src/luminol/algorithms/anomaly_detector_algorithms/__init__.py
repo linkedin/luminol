@@ -9,7 +9,7 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
-from luminol.constants import *
+from luminol.constants import DEFAULT_NOISE_PCT_THRESHOLD
 
 __all__ = ['bitmap_detector', 'derivative_detector', 'exp_avg_detector', 'default_detector', 'absolute_threshold',
                      'diff_percent_threshold', 'sign_test']

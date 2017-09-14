@@ -9,7 +9,9 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
-from luminol.algorithms.anomaly_detector_algorithms import *
+from luminol.algorithms.anomaly_detector_algorithms import (bitmap_detector,
+    default_detector, derivative_detector, exp_avg_detector, absolute_threshold,
+    diff_percent_threshold, sign_test)
 
 anomaly_detector_algorithms = {
         'bitmap_detector': bitmap_detector.BitmapDetector,

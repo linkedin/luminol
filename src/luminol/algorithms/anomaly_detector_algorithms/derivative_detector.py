@@ -13,7 +13,7 @@ import numpy
 
 from luminol import utils
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
+from luminol.constants import DEFAULT_DERI_SMOOTHING_FACTOR
 from luminol.modules.time_series import TimeSeries
 
 

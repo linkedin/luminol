@@ -12,8 +12,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 from luminol.algorithms.anomaly_detector_algorithms.exp_avg_detector import ExpAvgDetector
 from luminol.algorithms.anomaly_detector_algorithms.derivative_detector import DerivativeDetector
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
+from luminol.constants import (DEFAULT_DETECTOR_EMA_WEIGHT,
+                               DEFAULT_DETECTOR_EMA_SIGNIFICANT)
 
 
 class DefaultDetector(AnomalyDetectorAlgorithm):

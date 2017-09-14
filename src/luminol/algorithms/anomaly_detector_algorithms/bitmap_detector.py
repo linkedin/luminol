@@ -15,8 +15,13 @@ import math
 
 from luminol import exceptions
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
+from luminol.constants import (DEFAULT_BITMAP_PRECISION,
+                               DEFAULT_BITMAP_CHUNK_SIZE,
+                               DEFAULT_BITMAP_LAGGING_WINDOW_SIZE_PCT,
+                               DEFAULT_BITMAP_LEADING_WINDOW_SIZE_PCT,
+                               DEFAULT_BITMAP_MINIMAL_POINTS_IN_WINDOWS,
+                               DEFAULT_BITMAP_MAXIMAL_POINTS_IN_WINDOWS)
 
 
 class BitmapDetector(AnomalyDetectorAlgorithm):
