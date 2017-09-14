@@ -89,7 +89,6 @@ class Correlator(object):
                 self.algorithm_params = self.algorithm_params.copy()
                 self.algorithm_params.update(algorithm_params)
 
-
     def _sanity_check(self):
         """
         Check if the time series have more than two data points.

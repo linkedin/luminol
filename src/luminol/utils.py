@@ -21,6 +21,7 @@ from luminol import constants, exceptions
 from scipy.stats import binom
 import sys
 
+
 def compute_ema(smoothing_factor, points):
     """
     Compute exponential moving average of a list of points.

@@ -42,7 +42,7 @@ class DefaultDetector(AnomalyDetectorAlgorithm):
         for timestamp in anom_scores_ema.timestamps:
             # Compute a weighted anomaly score.
             anom_scores[timestamp] = max(anom_scores_ema[timestamp],
-                                                                     anom_scores_ema[timestamp] * DEFAULT_DETECTOR_EMA_WEIGHT + anom_scores_deri[timestamp] * (1 - DEFAULT_DETECTOR_EMA_WEIGHT))
+                                         anom_scores_ema[timestamp] * DEFAULT_DETECTOR_EMA_WEIGHT + anom_scores_deri[timestamp] * (1 - DEFAULT_DETECTOR_EMA_WEIGHT))
             # If ema score is significant enough, take the bigger one of the weighted score and deri score.
             if anom_scores_ema[timestamp] > DEFAULT_DETECTOR_EMA_SIGNIFICANT:
                 anom_scores[timestamp] = max(anom_scores[timestamp], anom_scores_deri[timestamp])

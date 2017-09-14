@@ -11,8 +11,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 from luminol.constants import DEFAULT_NOISE_PCT_THRESHOLD
 
-__all__ = ['bitmap_detector', 'derivative_detector', 'exp_avg_detector', 'default_detector', 'absolute_threshold',
-                     'diff_percent_threshold', 'sign_test']
+__all__ = ['bitmap_detector', 'derivative_detector', 'exp_avg_detector',
+           'default_detector', 'absolute_threshold', 'diff_percent_threshold',
+           'sign_test']
 
 
 class AnomalyDetectorAlgorithm(object):

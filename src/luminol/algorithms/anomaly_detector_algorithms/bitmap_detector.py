@@ -33,8 +33,8 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
     The ideas are from this paper:
     Assumption-Free Anomaly Detection in Time Series(http://alumni.cs.ucr.edu/~ratana/SSDBM05.pdf).
     """
-    def __init__(self, time_series, baseline_time_series=None, precision=None, lag_window_size=None,
-        future_window_size=None, chunk_size=None):
+    def __init__(self, time_series, baseline_time_series=None, precision=None,
+                 lag_window_size=None, future_window_size=None, chunk_size=None):
         """
         Initializer
         :param TimeSeries time_series: a TimeSeries object.
