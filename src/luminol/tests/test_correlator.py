@@ -18,9 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from luminol import exceptions
 from luminol import Luminol
-from luminol.anomaly_detector import AnomalyDetector
 from luminol.correlator import Correlator
-from luminol.modules.time_series import TimeSeries
 
 
 class TestCorrelator(unittest.TestCase):

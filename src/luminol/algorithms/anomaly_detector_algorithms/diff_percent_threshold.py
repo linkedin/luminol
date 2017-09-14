@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 from luminol import exceptions
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
 
 
