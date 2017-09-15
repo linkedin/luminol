@@ -42,8 +42,8 @@ anomalies = detector.get_anomalies()
 3. if there is anomaly, correlate the first anomaly period with a secondary time series ts2.
 ```python
 if anomalies:
- time_period = anomalies[0].get_time_window()
- correlator = luminol.correlator.Correlator(ts, ts2, time_period)
+    time_period = anomalies[0].get_time_window()
+    correlator = luminol.correlator.Correlator(ts, ts2, time_period)
 ```
 
 4. print the correlation coefficient
@@ -95,8 +95,8 @@ The library contains two classes: `AnomalyDetector` and `Correlator`, and there 
 _class_ luminol.anomaly_detector.**AnomalyDetecor**
 ```python
 __init__(self, time_series, baseline_time_series=None, score_only=False, score_threshold=None,
-score_percentile_threshold=None, algorithm_name=None, algorithm_params=None,
-refine_algorithm_name=None, refine_algorithm_params=None)
+         score_percentile_threshold=None, algorithm_name=None, algorithm_params=None,
+         refine_algorithm_name=None, refine_algorithm_params=None)
 ```
 *  `time_series`: The metric you want to conduct anomaly detection on. It can have the following three types:
 
@@ -152,7 +152,7 @@ The **AnomalyDetector** class has the following public methods:
 _class_ luminol.correlator.**Correlator**
 ```python
 __init__(self, time_series_a, time_series_b, time_period=None, use_anomaly_score=False,
-algorithm_name=None, algorithm_params=None)
+         algorithm_name=None, algorithm_params=None)
 ```
 * `time_series_a`: a time series, for its type, please refer to time_series for AnomalyDetector above.
 * `time_series_b`: a time series, for its type, please refer to time_series for AnomalyDetector above.
