@@ -21,7 +21,7 @@ make sure you have python, pip, numpy, and install directly through pip:
 ```
 pip install luminol
 ```
-the most up-to-date version of the library is 0.1.
+the most up-to-date version of the library is 0.4.
 
 ***
 
