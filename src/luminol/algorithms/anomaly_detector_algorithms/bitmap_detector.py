@@ -62,9 +62,8 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
         Check if there are enough data points.
         """
         windows = self.lag_window_size + self.future_window_size
-        if (not self.lag_window_size or not self.future_window_size
-            or self.time_series_length < windows or windows < DEFAULT_BITMAP_MINIMAL_POINTS_IN_WINDOWS):
-                raise exceptions.NotEnoughDataPoints
+        if (not self.lag_window_size or not self.future_window_size or self.time_series_length < windows or windows < DEFAULT_BITMAP_MINIMAL_POINTS_IN_WINDOWS):
+            raise exceptions.NotEnoughDataPoints
 
         # If window size is too big, too many data points will be assigned a score of 0 in the first lag window
         # and the last future window.
