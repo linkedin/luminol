@@ -1,4 +1,7 @@
-# luminol #
+# luminol
+
+[![Python Versions](https://img.shields.io/badge/Python-2.7%2C%203.6-blue.svg)](https://travis-ci.org/linkedin/luminol)
+[![Build Status](https://travis-ci.org/linkedin/luminol.svg?branch=master)](https://travis-ci.org/linkedin/luminol)
 
 ### Overview
 Luminol is a light weight python library for time series data analysis. The two major functionalities it supports are anomaly detection and correlation. It can be used to investigate possible causes of anomaly. You collect time series data and Luminol can:
