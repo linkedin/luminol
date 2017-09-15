@@ -223,4 +223,19 @@ for a in anomalies:
 """ Output:
 ts2 correlates with ts1 at time period (2, 5)
 """
+```
 
+### Contributing
+Clone source and install package and dev requirements:
+
+```bash
+pip install -r requirements.txt
+pip install pytest pytest-cov pylama
+```
+
+Tests and linting run with:
+
+```bash
+python -m pytest --cov=src/luminol/ src/luminol/tests/
+python -m pylama -i E501 src/luminol/
+```
