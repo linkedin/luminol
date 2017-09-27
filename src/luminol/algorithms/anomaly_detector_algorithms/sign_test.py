@@ -38,11 +38,8 @@ class SignTest(AnomalyDetectorAlgorithm):
      c) the test window must not be larger than the time series
     """
     def __init__(self, time_series, baseline_time_series,
-                             percent_threshold_upper=None,
-                             percent_threshold_lower=None,
-                             offset=0.0,
-                             scan_window=None,
-                             confidence=0.01):
+                 percent_threshold_upper=None, percent_threshold_lower=None,
+                 offset=0.0, scan_window=None, confidence=0.01):
         """
         :param time_series: current time series
         :param baseline_time_series: baseline time series
@@ -93,11 +90,11 @@ class SignTest(AnomalyDetectorAlgorithm):
         scores = np.zeros(len(self.time_series.values))
 
         anomalies = SignTest._rolling_sign_test(self.scale * np.array(self.time_series.values),
-                                                                                        self.scale * np.array(self.baseline_time_series.values),
-                                                                                        k=self.scan_window,
-                                                                                        conf=self.confidence,
-                                                                                        alpha=float(self.percent_threshold) / 100,
-                                                                                        offset=self.scale * self.offset)
+                                                self.scale * np.array(self.baseline_time_series.values),
+                                                k=self.scan_window,
+                                                conf=self.confidence,
+                                                alpha=float(self.percent_threshold) / 100,
+                                                offset=self.scale * self.offset)
         for (s, e), prob in anomalies:
             scores[s:e] = 100 * prob
 

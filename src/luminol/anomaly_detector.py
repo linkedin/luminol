@@ -17,9 +17,11 @@ This module detects anomalies in a single time series.
 
 from luminol import exceptions, utils
 from luminol.algorithms.anomaly_detector_algorithms.all import anomaly_detector_algorithms
-from luminol.constants import *
 from luminol.modules.anomaly import Anomaly
 from luminol.modules.time_series import TimeSeries
+from luminol.constants import (ANOMALY_DETECTOR_ALGORITHM, ANOMALY_THRESHOLD,
+                               ANOMALY_DETECTOR_REFINE_ALGORITHM,
+                               DEFAULT_SCORE_PERCENT_THRESHOLD)
 
 
 class AnomalyDetector(object):

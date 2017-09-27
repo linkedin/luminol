@@ -17,7 +17,7 @@ This module finds correlation between two time series.
 from luminol import exceptions, utils
 from luminol.algorithms.correlator_algorithms.all import correlator_algorithms
 from luminol.anomaly_detector import AnomalyDetector
-from luminol.constants import *
+from luminol.constants import CORRELATOR_ALGORITHM
 from luminol.modules.time_series import TimeSeries
 
 
@@ -88,7 +88,6 @@ class Correlator(object):
                 # self.algorithm_params = dict(algorithm_params.items() + self.algorithm_params.items())
                 self.algorithm_params = self.algorithm_params.copy()
                 self.algorithm_params.update(algorithm_params)
-
 
     def _sanity_check(self):
         """

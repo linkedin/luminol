@@ -13,14 +13,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 import os
 import sys
 import unittest
-import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from luminol import exceptions
 from luminol.anomaly_detector import AnomalyDetector
 from luminol.modules.time_series import TimeSeries
-from luminol.utils import pbinom, qbinom
 # Needed for custom algorithms
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
 
@@ -71,16 +69,16 @@ class TestAnomalyDetector(unittest.TestCase):
                                                   algorithm_name='sign_test'))
         # test over specified
         algorithm_params = {'percent_threshold_upper': 20,
-                          'percent_threshold_lower': -20,
-                          'scan_window': 24,
-                          'confidence': 0.01}
+                            'percent_threshold_lower': -20,
+                            'scan_window': 24,
+                            'confidence': 0.01}
 
         self.assertRaises(exceptions.RequiredParametersNotPassed,
                           lambda: AnomalyDetector(self.s1, baseline_time_series=self.s2,
                                                   algorithm_name='sign_test'))
         # Simple tests
         algorithm_params = {'percent_threshold_upper': 20,
-                          'scan_window': 24}
+                            'scan_window': 24}
 
         # first no anomalies
         detector = AnomalyDetector(ts, baseline_time_series=bs, algorithm_name='sign_test',
@@ -237,7 +235,6 @@ class TestAnomalyDetector(unittest.TestCase):
         self.assertTrue(anomalies is not None)
         self.assertEqual(len(anomalies), 1)
 
-
     def test_sign_test_algorithm_with_shift(self):
         """
         Test "sign test" algorithm with a threshold of 20%
@@ -385,6 +382,7 @@ class TestAnomalyDetector(unittest.TestCase):
         detector1 = AnomalyDetector(self.s1, score_percent_threshold=0.1, algorithm_name='derivative_detector')
         self.assertNotEqual(detector1.get_anomalies(), detector.get_anomalies())
 
+
 class CustomAlgo(AnomalyDetectorAlgorithm):
     """
     Copy of DiffPercentThreshold Algorithm from algorithms/anomaly_detector_algorithms/diff_percent_threshold.py to test
@@ -428,6 +426,7 @@ class CustomAlgo(AnomalyDetectorAlgorithm):
                 anom_scores[timestamp] = -1 * diff_percent
 
         self.anom_scores = TimeSeries(self._denoise_scores(anom_scores))
+
 
 if __name__ == '__main__':
     unittest.main()

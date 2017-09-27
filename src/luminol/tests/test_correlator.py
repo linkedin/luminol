@@ -18,9 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from luminol import exceptions
 from luminol import Luminol
-from luminol.anomaly_detector import AnomalyDetector
 from luminol.correlator import Correlator
-from luminol.modules.time_series import TimeSeries
 
 
 class TestCorrelator(unittest.TestCase):
@@ -105,6 +103,7 @@ class TestLuminol(unittest.TestCase):
         self.assertTrue(isinstance(self.luminol.get_root_causes(), dict))
         self.assertEqual(self.luminol.get_root_causes()['A'], 'm1')
         self.assertEqual(self.luminol.get_root_causes()['B'], 'm2')
+
 
 if __name__ == '__main__':
     unittest.main()

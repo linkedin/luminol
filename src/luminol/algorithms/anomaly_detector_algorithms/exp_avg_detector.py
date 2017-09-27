@@ -13,8 +13,9 @@ import numpy
 
 from luminol import utils
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
+from luminol.constants import (DEFAULT_EMA_SMOOTHING_FACTOR,
+                               DEFAULT_EMA_WINDOW_SIZE_PCT)
 
 
 class ExpAvgDetector(AnomalyDetectorAlgorithm):

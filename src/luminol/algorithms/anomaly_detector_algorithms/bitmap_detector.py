@@ -15,8 +15,13 @@ import math
 
 from luminol import exceptions
 from luminol.algorithms.anomaly_detector_algorithms import AnomalyDetectorAlgorithm
-from luminol.constants import *
 from luminol.modules.time_series import TimeSeries
+from luminol.constants import (DEFAULT_BITMAP_PRECISION,
+                               DEFAULT_BITMAP_CHUNK_SIZE,
+                               DEFAULT_BITMAP_LAGGING_WINDOW_SIZE_PCT,
+                               DEFAULT_BITMAP_LEADING_WINDOW_SIZE_PCT,
+                               DEFAULT_BITMAP_MINIMAL_POINTS_IN_WINDOWS,
+                               DEFAULT_BITMAP_MAXIMAL_POINTS_IN_WINDOWS)
 
 
 class BitmapDetector(AnomalyDetectorAlgorithm):
@@ -28,8 +33,8 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
     The ideas are from this paper:
     Assumption-Free Anomaly Detection in Time Series(http://alumni.cs.ucr.edu/~ratana/SSDBM05.pdf).
     """
-    def __init__(self, time_series, baseline_time_series=None, precision=None, lag_window_size=None,
-        future_window_size=None, chunk_size=None):
+    def __init__(self, time_series, baseline_time_series=None, precision=None,
+                 lag_window_size=None, future_window_size=None, chunk_size=None):
         """
         Initializer
         :param TimeSeries time_series: a TimeSeries object.
@@ -57,9 +62,8 @@ class BitmapDetector(AnomalyDetectorAlgorithm):
         Check if there are enough data points.
         """
         windows = self.lag_window_size + self.future_window_size
-        if (not self.lag_window_size or not self.future_window_size
-            or self.time_series_length < windows or windows < DEFAULT_BITMAP_MINIMAL_POINTS_IN_WINDOWS):
-                raise exceptions.NotEnoughDataPoints
+        if (not self.lag_window_size or not self.future_window_size or self.time_series_length < windows or windows < DEFAULT_BITMAP_MINIMAL_POINTS_IN_WINDOWS):
+            raise exceptions.NotEnoughDataPoints
 
         # If window size is too big, too many data points will be assigned a score of 0 in the first lag window
         # and the last future window.

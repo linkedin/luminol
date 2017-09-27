@@ -21,6 +21,7 @@ from luminol import constants, exceptions
 from scipy.stats import binom
 import sys
 
+
 def compute_ema(smoothing_factor, points):
     """
     Compute exponential moving average of a list of points.
@@ -71,12 +72,12 @@ def to_epoch(t_str):
     try:
         t = float(t_str)
         return t
-    except:
+    except ValueError:
         for format in constants.TIMESTAMP_STR_FORMATS:
             try:
                 t = datetime.datetime.strptime(t_str, format)
                 return float(time.mktime(t.utctimetuple()) * 1000.0 + t.microsecond / 1000.0)
-            except:
+            except ValueError:
                 pass
     raise exceptions.InvalidDataFormat
 
