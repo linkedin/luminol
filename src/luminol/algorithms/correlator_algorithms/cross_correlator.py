@@ -26,13 +26,13 @@ class CrossCorrelator(CorrelatorAlgorithm):
         Initializer
         :param TimeSeries time_series_a: TimeSeries a.
         :param TimeSeries time_series_b: TimeSeries b.
-        :param int max_shift_milliseconds: allowed maximal shift seconds.
+        :param int max_shift_seconds: allowed maximal shift seconds.
         :param time_period: if given, correlate the data inside the time period only.
         """
         super(CrossCorrelator, self).__init__(self.__class__.__name__, time_series_a, time_series_b)
         self.shift_impact = shift_impact or DEFAULT_SHIFT_IMPACT
         if max_shift_seconds is not None:
-            self.max_shift_milliseconds = max_shift_seconds
+            self.max_shift_milliseconds = max_shift_seconds * 1000
         else:
             self.max_shift_milliseconds = DEFAULT_ALLOWED_SHIFT_SECONDS * 1000
 
