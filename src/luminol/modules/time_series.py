@@ -289,7 +289,8 @@ class TimeSeries(object):
         maximum = self.max()
         if maximum:
             minimum = self.min()
-            self.values = [((value - minimum) / (maximum - minimum)) for value in self.values]
+            if minimum:
+                self.values = [((value - minimum) / (maximum - minimum)) for value in self.values]
 
     def crop(self, start_timestamp, end_timestamp):
         """
