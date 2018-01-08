@@ -282,13 +282,14 @@ class TimeSeries(object):
 
     def normalize(self):
         """
-        Return a new time series with all values normalized to 0 to 1.
+        Return a new time series with all values normalized between 0 and 1.
 
         :return: `None`
         """
         maximum = self.max()
         if maximum:
-            self.values = [value / maximum for value in self.values]
+            minimum = self.min()
+            self.values = [((value - minimum) / (maximum - minimum)) for value in self.values]
 
     def crop(self, start_timestamp, end_timestamp):
         """
