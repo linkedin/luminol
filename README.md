@@ -212,7 +212,7 @@ from luminol.anomaly_detector import AnomalyDetector
 from luminol.correlator import Correlator
 
 ts1 = {0: 0, 1: 0.5, 2: 1, 3: 1, 4: 1, 5: 0, 6: 0, 7: 0, 8: 0}
-ts2 = {0: 0, 0: 0.5, 2: 1, 3: 0.5, 4: 1, 5: 0, 6: 1, 7: 1, 8: 1}
+ts2 = {0: 0, 1: 0.5, 2: 1, 3: 0.5, 4: 1, 5: 0, 6: 1, 7: 1, 8: 1}
 
 my_detector = AnomalyDetector(ts1, score_threshold=1.5)
 score = my_detector.get_all_scores()
