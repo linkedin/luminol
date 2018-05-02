@@ -77,7 +77,7 @@ class ExpAvgDetector(AnomalyDetectorAlgorithm):
         ema = utils.compute_ema(self.smoothing_factor, values)
         stdev = numpy.std(values)
         for i, (timestamp, value) in enumerate(self.time_series_items):
-            anom_score = abs((value - ema[i]) / stdev) if stdev else value - ema[i]
+            anom_score = abs((value - ema[i]) / stdev) if stdev else abs(value - ema[i])
             anom_scores[timestamp] = anom_score
         self.anom_scores = TimeSeries(self._denoise_scores(anom_scores))
 
