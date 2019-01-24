@@ -112,7 +112,7 @@ __init__(self, time_series, baseline_time_series=None, score_only=False, score_t
 * `baseline_time_series`: an optional baseline time series of one the types mentioned above.
 * `score only(bool)`: if asserted, anomaly scores for the time series will be available, while anomaly periods will not be identified.
 * `score_threshold`: if passed, anomaly scores above this value will be identified as anomaly. It can override score_percentile_threshold.
-* `score_precentile_threshold`: if passed, anomaly scores above this percentile will be identified as anomaly. It can not override score_threshold.
+* `score_percentile_threshold`: if passed, anomaly scores above this percentile will be identified as anomaly. It can not override score_threshold.
 * `algorithm_name(string)`: if passed, the specific algorithm will be used to compute anomaly scores.
 * `algorithm_params(dict)`: additional parameters for algorithm specified by algorithm_name.
 * `refine_algorithm_name(string)`: if passed, the specific algorithm will be used to compute the time stamp of severity within each anomaly period.
