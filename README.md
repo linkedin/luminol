@@ -95,7 +95,7 @@ It has a various handy methods for manipulating time series, including generator
 ### API
 The library contains two classes: `AnomalyDetector` and `Correlator`, and there are two sets of APIs, one corresponding to each class. There are also customized modules for better data representation. The [Modules](#modules) section in this documentation may provide useful information as you walk through the APIs.
 #### AnomalyDetector
-_class_ luminol.anomaly_detector.**AnomalyDetecor**
+_class_ luminol.anomaly_detector.**AnomalyDetector**
 ```python
 __init__(self, time_series, baseline_time_series=None, score_only=False, score_threshold=None,
          score_percentile_threshold=None, algorithm_name=None, algorithm_params=None,
