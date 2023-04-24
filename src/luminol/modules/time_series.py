@@ -316,7 +316,7 @@ class TimeSeries(object):
         :param default: Value to return as a default should the calculation not be possible.
         :return: Float representing the average value or `None`.
         """
-        return numpy.ndarray.item(numpy.average(self.values)) if self.values else default
+        return numpy.average(self.values).item() if self.values else default
 
     def median(self, default=None):
         """
@@ -325,7 +325,7 @@ class TimeSeries(object):
         :param default: Value to return as a default should the calculation not be possible.
         :return: Float representing the median value or `None`.
         """
-        return numpy.ndarray.item(numpy.median(self.values)) if self.values else default
+        return numpy.median(self.values).item() if self.values else default
 
     def max(self, default=None):
         """
@@ -334,7 +334,7 @@ class TimeSeries(object):
         :param default: Value to return as a default should the calculation not be possible.
         :return: Float representing the maximum value or `None`.
         """
-        return numpy.ndarray.item(numpy.max(self.values)) if self.values else default
+        return numpy.max(self.values).item() if self.values else default
 
     def min(self, default=None):
         """
@@ -343,7 +343,7 @@ class TimeSeries(object):
         :param default: Value to return as a default should the calculation not be possible.
         :return: Float representing the maximum value or `None`.
         """
-        return numpy.ndarray.item(numpy.min(self.values)) if self.values else default
+        return numpy.min(self.values).item() if self.values else default
 
     def percentile(self, n, default=None):
         """
@@ -353,7 +353,7 @@ class TimeSeries(object):
         :param default: Value to return as a default should the calculation not be possible.
         :return: Float representing the Nth percentile value or `None`.
         """
-        return numpy.ndarray.item(numpy.percentile(self.values, n)) if self.values else default
+        return numpy.percentile(self.values, n).item() if self.values else default
 
     def stdev(self, default=None):
         """
@@ -362,7 +362,7 @@ class TimeSeries(object):
         :param default: Value to return as a default should the calculation not be possible.
         :return: Float representing the standard deviation value or `None`.
         """
-        return numpy.ndarray.item(numpy.std(self.values)) if self.values else default
+        return numpy.std(self.values).item() if self.values else default
 
     def sum(self, default=None):
         """
@@ -371,4 +371,4 @@ class TimeSeries(object):
         :param default: Value to return as a default should the calculation not be possible.
         :return: Float representing the sum or `None`.
         """
-        return numpy.ndarray.item(numpy.sum(self.values)) if self.values else default
+        return numpy.sum(self.values).item() if self.values else default
