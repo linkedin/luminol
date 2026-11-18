@@ -44,9 +44,8 @@ class DiffPercentThreshold(AnomalyDetectorAlgorithm):
         This algorithm just takes the diff of threshold with current value as anomaly score
         """
         anom_scores = {}
-        for i, (timestamp, value) in enumerate(self.time_series.items()):
-
-            baseline_value = self.baseline_time_series[i]
+        for timestamp, value in self.time_series.items():
+            baseline_value = self.baseline_time_series[timestamp]
 
             if baseline_value > 0:
                 diff_percent = 100 * (value - baseline_value) / baseline_value

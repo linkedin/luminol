@@ -55,6 +55,16 @@ class TestAnomalyDetector(unittest.TestCase):
                           lambda: AnomalyDetector(self.s1, baseline_time_series=self.s2,
                                                   algorithm_name='diff_percent_threshold'))
 
+    def test_diff_percent_threshold_uses_aligned_timestamps(self):
+        series = {1700000000: 100, 1700000060: 150, 1700000180: 50}
+        baseline = {1700000000: 100, 1700000060: 100, 1700000180: 200}
+        detector = AnomalyDetector(series, baseline_time_series=baseline, score_only=True,
+                                   algorithm_name='diff_percent_threshold',
+                                   algorithm_params={'percent_threshold_upper': 20, 'percent_threshold_lower': -20})
+
+        self.assertEqual(dict(detector.get_all_scores().items()),
+                         {1700000000: 0, 1700000060: 50, 1700000180: 75})
+
     def test_sign_test_algorithm(self):
         """
         Test "sign test" algorithm with a threshold of 20%
